@@ -114,7 +114,9 @@ n_z = size(z,2);
 invZ = (z'*z)\eye(n_z);
 
 
-grid = [-4:0.5:4];
+% grid = [-4:0.5:4];
+grid = [-2:0.1:2];
+
 nb_grid = size(grid,2);
 fval_grid = zeros(nb_grid,1);
 for ii = 1:nb_grid
@@ -128,7 +130,7 @@ figure
 plot(grid, fval_grid)
 
 [sigma_hat, fval] = fminunc(@(theta)gmm_random(theta, xo_big, price, price, nu,...
-    sj, z, invZ, y, marketStarts, marketEnds), 1.5, opt);
+    sj, z, invZ, y, marketStarts, marketEnds), -1.5, opt);
 
 mu_est = sigma_hat*price*nu;
 
