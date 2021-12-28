@@ -1,0 +1,88 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage{geometry}
+\usepackage{hyperref}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{bm}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=cyan,
+}
+
+\geometry{margin=1in}
+
+\begin{document}
+\title{Job Search with Formal and Informal Sectors}
+
+\maketitle
+
+\section{Reservation Wage}
+
+Using the value from being employed in a job $j$, $\rho E_j(w_j) = w_j + \eta_j [U-E_j(w_j)]$, we find
+\begin{align*}
+    E_j(w_j) = \frac{w_j+\eta_j U}{\rho+\eta_j}
+\end{align*}
+which we can substitute into the value function for being unemployed:
+\begin{align*}
+    \rho U = b + \lambda_f \int_{\rho U} \frac{w_f-\rho U}{\rho+\eta_f} dG_f(w_f) + \lambda_i \int_{\rho U} \frac{w_i-\rho U}{\rho+\eta_i} dG_i(w_i)
+\end{align*}
+in this expression, we took the reservation wage to be
+\begin{align*}
+    w_j^* = \rho U
+\end{align*}
+which gives us the fixed point equation for reservation wage:
+\begin{align*}
+    w_j^* = b + \lambda_f \int_{w_j^*} \frac{w_f- w_j^*}{\rho+\eta_f} dG_f(w_f) + \lambda_i \int_{w_j^*} \frac{w_i-w_j^*}{\rho+\eta_i} dG_i(w_i).
+\end{align*}
+The reservation wage is common between jobs since conditional on being offered some wage in a sector, the worker chooses only between that job or unemployment. This means that there is a parallel between the two sector case incentives and the single sector case incentives that drives reservation wage to be the same across sectors.
+
+\section{Steady-State Proportion of Employment}
+
+As in the lectures, the probability that a randomly-sampled individual is unemployed is 
+\begin{align*}
+    p(u) &= \frac{Et_u}{Et_u+Et_i+Et_f} \\
+         &= \frac{(\lambda_i \tilde{G}_f (w^{*})+\lambda_f \tilde{G}_i (w^{*}))^{-1}}{(\lambda_i \tilde{G}_f (w^{*})+\lambda_f \tilde{G}_i (w^{*}))^{-1}+\eta_i^{-1}+\eta_f^{-1}}
+\end{align*}
+in addition,
+\begin{align*}
+    p(i) &= \frac{\eta_i^{-1}}{(\lambda_i \tilde{G}_f (w^{*})+\lambda_f \tilde{G}_i (w^{*}))^{-1}+\eta_i^{-1}+\eta_f^{-1}}\\
+    p(f) & = \frac{\eta_f^{-1}}{(\lambda_i \tilde{G}_f (w^{*})+\lambda_f \tilde{G}_i (w^{*}))^{-1}+\eta_i^{-1}+\eta_f^{-1}}
+\end{align*}
+where $\tilde{G}_j (w^{*}) = Pr_j(w>w^*)$.
+
+\section{Log-likelihood Function}
+
+For an individual that is unemployed, the likelihood is
+\begin{align*}
+    L(t_u,u) = \bm{G}(w^*) \exp[-\bm{G}(w^*) t_u] \times p(u)
+\end{align*}
+where $\bm{G}(w^*) = \lambda_i \tilde{G}_f (w^{*})+\lambda_f \tilde{G}_i (w^{*})$,
+the likelihood of finding an employed individual in sector $j$ is 
+\begin{align*}
+    L(w_j,j) =  \frac{g_j(w_j)}{\tilde{G_j}(w^*)} \times p(j).
+\end{align*}
+
+these give the empirical likelihood function for each $k$ individual of a population size $N$:
+\begin{align*}
+    L(\bm{w,j,t_u}) = \prod_{k \in j}[\frac{g_j(w_j)\bm{G}(w^*)\eta_j}{\tilde{G}_j (w^*)(\eta_i \eta_f+\bm{G}(w^*)\eta_i+\bm{G}(w^*)\eta_f)}] \times \prod_{k \in u}[\frac{\bm{G}(w^*)\exp(-\bm{G}(w^*)t_u) \eta_i \eta_f}{\eta_i \eta_f+\bm{G}(w^*) \eta_i+\bm{G}(w^*) \eta_f}]
+\end{align*}
+giving a log-likelihood:
+\begin{align*}
+    \ln L &= \sum_{k \in i} \ln(g_i(w_i)) +\sum_{k \in f} \ln(g_f(w_f)) + N \ln(\bm{G}(w^*))+\sum_{k \in i} \ln(\eta_i) +\sum_{k \in f} \ln(\eta_f) + \sum_{k \in u} \ln(\eta_i \eta_f) \\
+    & - N \ln(\eta_i \eta_f + \bm{G}(w^*)\eta_i +\bm{G}(w^*)\eta_f) - \sum_{k \in i} \ln(\tilde{G}_i(w^*)) - \sum_{k \in f} \ln(\tilde{G}_f(w^*)) - \sum_{k \in u} \bm{G}(w^*) t_u.
+\end{align*}
+\section{Identification}
+
+Taking the derivative of the log-likelihood with respect to the job termination rates $\eta_j$:
+\begin{align*}
+    \frac{N_f}{N} &= \frac{\bm{G}(w^*) \eta_f}{\eta_i \eta_f + \bm{G}(w^*)\eta_i +\bm{G}(w^*)\eta_f} \\
+    \frac{N_i}{N} &= \frac{\bm{G}(w^*) \eta_i}{\eta_i \eta_f + \bm{G}(w^*)\eta_i +\bm{G}(w^*)\eta_f}
+\end{align*}
+and the first-order condition with respect to the hazard rate out of unemployment $\bm{G}(w^*)$:
+
+\section{Empirical Estimation and Results}
+
+\end{document}
