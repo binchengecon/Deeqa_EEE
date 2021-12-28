@@ -129,8 +129,23 @@ end
 figure
 plot(grid, fval_grid)
 
+
+[~,Index_min_obj] = min(fval_grid);
+
+figure 
+plot(grid, fval_grid, 'k', 'linewidth', 1.7)
+hold on
+plot([grid(Index_min_obj);grid(Index_min_obj)], [min(fval_grid); max(fval_grid)], 'r', 'linewidth', 1.7)
+% gmm objective function is the lowest around sigma -0.3122
+xlabel('\sigma')
+ylabel('GMM objective function')
+axis tight
+
+saveas(gcf, 'Isis Answer.jpg')
+
 [sigma_hat, fval] = fminunc(@(theta)gmm_random(theta, xo_big, price, price, nu,...
     sj, z, invZ, y, marketStarts, marketEnds), -1.5, opt);
+
 
 mu_est = sigma_hat*price*nu;
 

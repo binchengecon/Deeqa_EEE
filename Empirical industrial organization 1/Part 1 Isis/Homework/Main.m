@@ -75,7 +75,10 @@ end
 % Uniform Draws
 rng(2021);
 ns = 100;
-nu = rand(1,ns);
+nu = rand(1,ns)-1/2; 
+%U[-1/2,1/2]
+% nu = rand(1,ns);
+%U[0,1]
 
 % Delta initilization
 
@@ -84,9 +87,9 @@ delta_init = log(sj./s0);
 % Graphical Exploration of Sigma
 % Optimize objective function with sigma over grid [-4,4]
 
-grid = [-4:0.1:4];
+% grid = [-4:0.1:4];
 
-% grid = [0:0.1:4];
+grid = [0:0.1:4];
 nb_grid = size(grid,2);
 obj_value = zeros(nb_grid,1);
 
@@ -102,15 +105,16 @@ end
 [~,Index_min_obj] = min(obj_value);
 
 figure 
-plot(grid, obj_value, 'k', 'linewidth', 1.7)
+plot(grid, obj_value)
 hold on
 plot([grid(Index_min_obj);grid(Index_min_obj)], [min(obj_value); max(obj_value)], 'r', 'linewidth', 1.7)
 % gmm objective function is the lowest around sigma -0.3122
 xlabel('\sigma')
 ylabel('GMM objective function')
+title("\sigma =" + sigma_hat_Nfe)
 axis tight
 
-saveas(gcf, 'GMM_Nfe.jpg' );
+saveas(gcf, 'GMM_NfePositiveSigma.jpg' );
 
 % Exploration of Sigma with fminunc
 
@@ -186,9 +190,10 @@ hold on
 plot([grid_fe(Index_min_obj_fe);grid_fe(Index_min_obj_fe)], [min(obj_value_fe); max(obj_value_fe)], 'r',  'linewidth', 1.7)% gmm objective function is the lowest around sigma -0.4030
 xlabel('\sigma')
 ylabel('GMM objective function')
+title("\sigma =" + sigma_hat_fe)
 axis tight
 
-saveas(gcf, 'GMM_fe.jpg' );
+saveas(gcf, 'GMM_fePositiveSigma.jpg' );
 % Exploration of Sigma with fminunc
 options = optimset('display', 'iter', 'tolX', 1e-4);
 
@@ -230,9 +235,10 @@ plot(x_alpha_Nfe, f_alpha_Nfe)
 xlabel('Fuel cost sensitivity')
 ylabel('Density')
 legend('With brand fe','Without brand fe')
+title("\sigma =" + sigma_hat_fe)
 hold off
 
-saveas(gcf,'sensitivity.jpg');
+saveas(gcf,'sensitivityPositiveSigma.jpg');
 %% Part 1: Question 3
 
 
@@ -244,22 +250,18 @@ price_2008 = price(Jt_2008);
 fuel_cost_2008 = fuel_cost(Jt_2008);
 Endo_2008 = Endo(Jt_2008,:);
 delta_fe_2008 = delta_fe(Jt_2008);
-delta_fe_2008_np = delta_fe_2008 - beta_hat_fe(5) * price_2008;
+
+
+% Intercept, Exo_Except Fuel cost, fuel cost, brand fixed effect, price
+%     1          2-4                    5                          end
+
+delta_fe_2008_np = delta_fe_2008 - beta_hat_fe(end) * price_2008;
 co2_2008 = co2(Jt_2008);
 
 % 10 euro for each gram per km 
 % remember price unit is in 10,000 euro
-
-tax_2008 = co2_2008*10/10000;
-
-numer = exp(delta_fe_2008  + sigma_hat_fe*fuel_cost_2008*nu);
-
-denom = 1+sum(numer,1);
-
-
-% i for draws
-s_hat_ij = numer./denom;
-s_hat_j= mean(s_hat_ij,2);  
+% 140 g/km -> 140*10 euros->1400/10000 in 10,000 euros
+% comparable with price
 
 % Temp_omega1 = diag(sum((beta_hat_fe(end-1)+zeros(1,ns)).*s_hat_ij,2));
 % Temp_omega2 = (beta_hat_fe(end-1)+zeros(1,ns)).*s_hat_ij*s_hat_ij';
@@ -269,6 +271,18 @@ s_hat_j= mean(s_hat_ij,2);
 % own = (repmat(num_manuf_2008, 1, kt_2008) == repmat(num_manuf_2008', kt_2008, 1));
 % 
 % omega_tilde = omega.*own;
+
+tax_2008 = co2_2008*10/10000;
+
+numer = exp(delta_fe_2008  + sigma_hat_fe*fuel_cost_2008*nu);
+
+denom = 1+sum(numer,1);
+
+% i for draws
+s_hat_ij = numer./denom;
+s_hat_j= mean(s_hat_ij,2);  
+
+
 
 Temp_omega1 = diag(sum((beta_hat_fe(end)).*s_hat_j,2));
 Temp_omega2 = (beta_hat_fe(end)).*s_hat_j*s_hat_j';
@@ -282,7 +296,7 @@ omega_tilde = omega.*own;
 
 % marginal cost
 mc_2008 = price_2008 + omega_tilde \ sj_2008;
-[f_mc_2008, x_mc_2008]= ksdensity(mc_2008);
+[f_mc_2008, x_mc_2008]= ksdensity(mc_2008,'Support','positive','BoundaryCorrection','reflection');
 
 %Plot the distribution of marginal cost
 
@@ -291,8 +305,9 @@ plot(x_mc_2008, f_mc_2008)
 axis([min(x_mc_2008) max(x_mc_2008) 0 max(1.05*f_mc_2008)])
 xlabel('Distribution of Marginal Cost in 2008')
 ylabel('density')
+title("\sigma =" + sigma_hat_fe)
 
-saveas(gcf,'MarginalCost2008.jpg');
+saveas(gcf,'MarginalCost2008PositiveSigma.jpg');
 
 Avg_price_2008 = mean(price_2008);
 Avg_markup_2008_Def1 = mean((price_2008-mc_2008)./price_2008);
@@ -365,7 +380,6 @@ for t = 1:size(grid_tax,2)
 
 Progress = grid_tax(t)/max(grid_tax)*100;
 Message = sprintf('The loop is running at %0.2f %%',Progress);
-display(Message)
 
 price_2008_Temp = fsolve(@(price_temp) CounterFactualSystem(price_temp, mc_2008, co2_2008, grid_tax(t) , fuel_cost_2008, delta_fe_2008_np, ...
     num_manuf_2008, beta_hat_fe(end), sigma_hat_fe, nu), price_2008, opt3);
@@ -408,9 +422,13 @@ Array_Sum_cs_CF(1,t) = consumer2(delta_fe_2008_np, price_2008_Temp , beta_hat_fe
 %    beta_hat_fe(2), sigma_hat_fe, nu,max(nb_households(Jt_2008)));
 
     Array_Sum_tax_revenue_CF(1,t) = tax_revenue;
+    
+    display(Message)
+
 end
 
 Matrix_price(:,2*size(grid_tax,2)+1) = price_2008;
+
 
 
 figure
@@ -418,16 +436,20 @@ plot(grid_tax,Array_Sum_tax_revenue_CF);
 hold on
 plot(grid_tax,Array_Sum_profit_CF);
 plot(grid_tax,Array_Sum_cs_CF);
-legend('Tax', 'Profit', 'ConsumerSurplus')
+legend('Tax Revenue', 'Profit', 'ConsumerSurplus')
+xlabel('Tax Rate')
+ylabel('Amount')
+title("\sigma =" + sigma_hat_fe)
 axis tight
 hold off
 
-saveas(gcf,'Tax_Revenue.jpg')
 
-save new111.mat
+saveas(gcf,'Tax_RevenuePositiveSigma.jpg')
+
+save changeendPositiveSigma.mat
 %% A quick look into results of simulation without waiting for loops
 % 
-% load test2.mat;
+% load changeendPositiveSigma.mat;
 % 
 % for t = 1:size(grid_tax,2)
 % 

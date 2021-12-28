@@ -1,10 +1,13 @@
-function aggregate_market_share = shares(delta, sigma, p, nu)
+function aggregate_market_share = shares(delta, sigma, nu, x1)
+
+% x1: random coefficient variable (possibly endogenous but can be exogenous)
+
 ns = size(nu,2);
 J = size(delta,1);
 
 %nu = vector column with draws, size (1, ns)
 
-mu = sigma*p*nu;%matrix size J, ns
+mu = sigma * x1 * nu;   %matrix size J, ns
 
 expdelta_mu = exp(repmat(delta,1, ns) + mu);
 
