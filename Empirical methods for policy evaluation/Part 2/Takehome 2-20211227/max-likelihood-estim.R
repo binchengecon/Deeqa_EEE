@@ -125,18 +125,28 @@ LogLikelihood2 <- function(parameters){
 }
 ### Optimize over LL
 
-initial_parameters <- rep(1.3,6)
+initial_parameters <- rep(1.3,4)
 optimal_parameters <- optim(par = initial_parameters,
+                            fn = LogLikelihood,method = "BFGS", 
+                            control = list(maxit = 10000, reltol = 1e-12))
+
+initial_parameters2 <- rep(1.3,6)
+optimal_parameters2 <- optim(par = initial_parameters2,
                             fn = LogLikelihood2,method = "BFGS", 
                             control = list(maxit = 10000, reltol = 1e-12))
 
 # different algorithm converges to the same values
 optim(par = optimal_parameters$par,fn = LogLikelihood,method = "L-BFGS-B", 
-      lower = c(-10,0.75,0.0,0.1,0,0), upper = c(10,10,10,10,1,1), control = list(maxit = 10000, pgtol = 1e-12)
+      lower = c(-10,0.75,0.0,0.1), upper = c(10,10,10,10), control = list(maxit = 10000, pgtol = 1e-12)
       )
+
+optim(par = optimal_parameters2$par,fn = LogLikelihood,method = "L-BFGS-B", 
+      lower = c(-10,0.75,0.0,0.1,0,0), upper = c(10,10,10,10,1,1), control = list(maxit = 10000, pgtol = 1e-12)
+)
 
 # FOC that is lying around is fulfilled!
 (G_tilde(mu = optimal_parameters$par[1], sigma = optimal_parameters$par[2], wage = w_star)/N_i)/(G_tilde(mu = optimal_parameters$par[3], sigma = optimal_parameters$par[4], wage = w_star)/N_f)
+(G_tilde(mu = optimal_parameters2$par[1], sigma = optimal_parameters2$par[2], wage = w_star)/N_i)/(G_tilde(mu = optimal_parameters2$par[3], sigma = optimal_parameters2$par[4], wage = w_star)/N_f)
 
 
 
@@ -151,14 +161,19 @@ optimal_parameters_alt <- optim(par = initial_parameters_alt,
 
 ## Estimate MaxLikelihood with package
 
-mle_results <- maxLik(logLik = function(parameters){-LogLikelihood2(parameters)}, start = initial_parameters)
-mle_results_alt <- maxLik(logLik = function(parameters){-LogLikelihood2(parameters)}, start = optimal_parameters$par)
+mle_results <- maxLik(logLik = function(parameters){-LogLikelihood(parameters)}, start = initial_parameters)
+mle_results_alt <- maxLik(logLik = function(parameters){-LogLikelihood(parameters)}, start = optimal_parameters$par)
+
+mle_results2 <- maxLik(logLik = function(parameters){-LogLikelihood2(parameters)}, start = initial_parameters2)
+mle_results_alt2 <- maxLik(logLik = function(parameters){-LogLikelihood2(parameters)}, start = optimal_parameters2$par)
 
 # Formal sector G-distribution is well-identified, but algorithm has problems identifying informal wage distribution, because so much of it is unobserved!
 # High variance, low mean is similar on the right tail then higher mean, lower variance. 
 
 # But this does not satisfy the FOC!! So choose the other one!!
 (G_tilde(mu = mle_results$estimate[1], sigma = mle_results$estimate[2], wage = w_star)/N_i)/(G_tilde(mu = mle_results$estimate[3], sigma = mle_results$estimate[4], wage = w_star)/N_f)
+(G_tilde(mu = mle_results2$estimate[1], sigma = mle_results2$estimate[2], wage = w_star)/N_i)/(G_tilde(mu = mle_results2$estimate[3], sigma = mle_results2$estimate[4], wage = w_star)/N_f)
+(G_tilde(mu = mle_results_alt2$estimate[1], sigma = mle_results_alt2$estimate[2], wage = w_star)/N_i)/(G_tilde(mu = mle_results_alt2$estimate[3], sigma = mle_results_alt2$estimate[4], wage = w_star)/N_f)
 
 # So use mle_results_alt
 summary(mle_results_alt)
