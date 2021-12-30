@@ -2,7 +2,8 @@
 ## Define likelihood function & functions to concentrate out some of the parameters
 
 G_tilde <- function(mu, sigma, dataset){
-  return( 1 - plnorm(min(dataset$wage), meanlog = mu, sdlog = sigma, lower.tail = TRUE, log.p = FALSE) )
+  temp <- min(dataset$wage)
+  return( 1 - plnorm(temp, meanlog = mu, sdlog = sigma, lower.tail = TRUE, log.p = FALSE) )
 }
 
 g       <- function(mu,sigma,dataset,employ){

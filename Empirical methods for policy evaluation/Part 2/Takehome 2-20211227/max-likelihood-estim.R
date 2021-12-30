@@ -8,7 +8,10 @@ library(stats4)
 library(maxLik)
 library(alr4)
 
+setwd("C:/Users/alienware/Desktop/Deeqa_EEE/Empirical methods for policy evaluation/Part 2/Takehome 2-20211227")
+
 ## Load data
+# chile <- read.delim(file = "casen_chile.txt", sep = ",", header = FALSE, col.names = c("unemp_duration","wage","status"))
 chile <- read.delim(file = "chile.txt", sep = ",", header = FALSE, col.names = c("unemp_duration","wage","status"))
 
 ## define parameters
@@ -58,7 +61,7 @@ LogLikelihood <- function(parameters){
   LL <- (
     -N*log(1 + lambda_value*G_tilde(mu = mu_f, sigma = sigma_f, wage = w_star)*(1/eta_value) + 
              lambda_value*G_tilde(mu = mu_i, sigma = sigma_i, wage = w_star)*(1/eta_value)
-           ) + 
+    ) + 
       # contribution of formally employed 
       sum(log(dlnorm(x = chile$wage[chile$status == 2], meanlog = mu_f, sdlog = sigma_f))) + 
       # contribution of informally employed
@@ -103,17 +106,17 @@ LogLikelihood2 <- function(parameters){
   LL <- (
     -N*log(1 + lambda*G_tilde(mu = mu_f, sigma = sigma_f, wage = w_star)*(1/eta) + 
              lambda*G_tilde(mu = mu_i, sigma = sigma_i, wage = w_star)*(1/eta)
-    ) + 
-      # contribution of formally employed 
-      sum(log(dlnorm(x = chile$wage[chile$status == 2], meanlog = mu_f, sdlog = sigma_f))) + 
-      # contribution of informally employed
-      sum(log(dlnorm(x = chile$wage[chile$status == 3], meanlog = mu_i, sdlog = sigma_i))) + 
-      # 
-      N_f*log(lambda/eta) + 
-      N_i*log(lambda/eta) + 
-      N_u*log(lambda*G_tilde(mu = mu_f, sigma = sigma_f, wage = w_star) + lambda*G_tilde(mu = mu_i, sigma = sigma_i, wage = w_star)) -
-      # 
-      (lambda*G_tilde(mu = mu_f, sigma = sigma_f, wage = w_star) + lambda*G_tilde(mu = mu_i, sigma = sigma_i, wage = w_star))*sum(chile$unemp_duration)
+    )   
+    # 
+    +  N_f*log(lambda/eta)  
+    +  N_i*log(lambda/eta)  
+    +  N_u*log(lambda*G_tilde(mu = mu_f, sigma = sigma_f, wage = w_star) + lambda*G_tilde(mu = mu_i, sigma = sigma_i, wage = w_star)) 
+    # 
+    - (lambda*G_tilde(mu = mu_f, sigma = sigma_f, wage = w_star) + lambda*G_tilde(mu = mu_i, sigma = sigma_i, wage = w_star))*sum(chile$unemp_duration)
+    # formally employed 
+    + sum(log(dlnorm(x = chile$wage[chile$status == 2], meanlog = mu_f, sdlog = sigma_f))) 
+    # informally employed
+    + sum(log(dlnorm(x = chile$wage[chile$status == 3], meanlog = mu_i, sdlog = sigma_i)))
   )
   
   if(sigma_i > 0 & sigma_f > 0 & lambda > 0 & eta > 0){
@@ -125,28 +128,34 @@ LogLikelihood2 <- function(parameters){
 }
 ### Optimize over LL
 
-initial_parameters <- rep(1.3,4)
-optimal_parameters <- optim(par = initial_parameters,
-                            fn = LogLikelihood,method = "BFGS", 
-                            control = list(maxit = 10000, reltol = 1e-12))
-
 initial_parameters2 <- rep(1.3,6)
 optimal_parameters2 <- optim(par = initial_parameters2,
-                            fn = LogLikelihood2,method = "BFGS", 
-                            control = list(maxit = 10000, reltol = 1e-12))
+                             fn = LogLikelihood2,method = "BFGS", 
+                             control = list(maxit = 10000, reltol = 1e-12))
+ 
+
+Param <- optimal_parameters2$par
+mu_i <- Param[1]
+sigma_i<-Param[2]
+mu_f<-Param[3]
+sigma_f<-Param[4]
+
+LogLikelihood2(parameters = Param)
+G_tilde(mu_i,sigma_i,w_star)
 
 # different algorithm converges to the same values
-optim(par = optimal_parameters$par,fn = LogLikelihood,method = "L-BFGS-B", 
-      lower = c(-10,0.75,0.0,0.1), upper = c(10,10,10,10), control = list(maxit = 10000, pgtol = 1e-12)
-      )
+optimal_parameters3 <- optim(par = optimal_parameters$par,fn = LogLikelihood,method = "L-BFGS-B", 
+                             lower = c(-10,0.75,0.0,0.1), upper = c(10,10,10,10), control = list(maxit = 10000, pgtol = 1e-12)
+)
 
-optim(par = optimal_parameters2$par,fn = LogLikelihood,method = "L-BFGS-B", 
-      lower = c(-10,0.75,0.0,0.1,0,0), upper = c(10,10,10,10,1,1), control = list(maxit = 10000, pgtol = 1e-12)
+optimal_parameters4 <- optim(par = optimal_parameters2$par,fn = LogLikelihood2,method = "L-BFGS-B", 
+                             lower = c(-10,0.75,0.0,0.1,0,0), upper = c(10,10,10,10,1,1), control = list(maxit = 10000, pgtol = 1e-12)
 )
 
 # FOC that is lying around is fulfilled!
 (G_tilde(mu = optimal_parameters$par[1], sigma = optimal_parameters$par[2], wage = w_star)/N_i)/(G_tilde(mu = optimal_parameters$par[3], sigma = optimal_parameters$par[4], wage = w_star)/N_f)
 (G_tilde(mu = optimal_parameters2$par[1], sigma = optimal_parameters2$par[2], wage = w_star)/N_i)/(G_tilde(mu = optimal_parameters2$par[3], sigma = optimal_parameters2$par[4], wage = w_star)/N_f)
+(G_tilde(mu = optimal_parameters4$par[1], sigma = optimal_parameters4$par[2], wage = w_star)/N_i)/(G_tilde(mu = optimal_parameters4$par[3], sigma = optimal_parameters4$par[4], wage = w_star)/N_f)
 
 
 
@@ -154,8 +163,8 @@ optim(par = optimal_parameters2$par,fn = LogLikelihood,method = "L-BFGS-B",
 # Other initial values?
 initial_parameters_alt <- c(1,0.4,-4.9,3.1)
 optimal_parameters_alt <- optim(par = initial_parameters_alt,
-                            fn = LogLikelihood,method = "BFGS", 
-                            control = list(maxit = 10000, reltol = 1e-12))
+                                fn = LogLikelihood,method = "BFGS", 
+                                control = list(maxit = 10000, reltol = 1e-12))
 
 
 
@@ -176,12 +185,12 @@ mle_results_alt2 <- maxLik(logLik = function(parameters){-LogLikelihood2(paramet
 (G_tilde(mu = mle_results_alt2$estimate[1], sigma = mle_results_alt2$estimate[2], wage = w_star)/N_i)/(G_tilde(mu = mle_results_alt2$estimate[3], sigma = mle_results_alt2$estimate[4], wage = w_star)/N_f)
 
 # So use mle_results_alt
-summary(mle_results_alt)
+summary(mle_results_alt2)
 
-lambda_estimate <- lambda(mu_i = mle_results_alt$estimate[1], sigma_i = mle_results_alt$estimate[2], mu_f = mle_results_alt$estimate[3], sigma_f = mle_results_alt$estimate[4])
+lambda_estimate <- lambda(mu_i = mle_results_alt2$estimate[1], sigma_i = mle_results_alt2$estimate[2], mu_f = mle_results_alt2$estimate[3], sigma_f = mle_results_alt2$estimate[4])
 eta_estimate <- eta(lambda = lambda_estimate, mu_i = mle_results_alt$estimate[1], sigma_i = mle_results_alt$estimate[2], mu_f = mle_results_alt$estimate[3], sigma_f = mle_results_alt$estimate[4])
 
-eta_estimate <- eta2(lambda = lambda_estimate, mu_i = mle_results_alt$estimate[1], sigma_i = mle_results_alt$estimate[2], mu_f = mle_results_alt$estimate[3], sigma_f = mle_results_alt$estimate[4])
+eta_estimate2 <- eta2(lambda = lambda_estimate, mu_i = mle_results_alt$estimate[1], sigma_i = mle_results_alt$estimate[2], mu_f = mle_results_alt$estimate[3], sigma_f = mle_results_alt$estimate[4])
 
 # # Attempt to get delta method to work // but didn't work...
 # deltaMethod(c(b0 = coef(mle_results_alt)[1],b1 = coef(mle_results_alt)[2],b2 = coef(mle_results_alt)[3], b3 = coef(mle_results_alt)[4]),
