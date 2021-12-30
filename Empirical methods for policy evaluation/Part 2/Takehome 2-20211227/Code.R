@@ -9,8 +9,8 @@ library(alr4)
 library(bbmle)
 library(xtable)
 
-setwd("C:/Users/\alienware/Desktop/Deeqa_EEE/Empirical methods for policy evaluation/Part 2/Takehome 2-20211227")
-# setwd("C:/Users/33678/Desktop/Deeqa_EEE/Empirical methods for policy evaluation/Part 2/Takehome 2-20211227")
+# setwd("C:/Users/\alienware/Desktop/Deeqa_EEE/Empirical methods for policy evaluation/Part 2/Takehome 2-20211227")
+setwd("C:/Users/33678/Desktop/Deeqa_EEE/Empirical methods for policy evaluation/Part 2/Takehome 2-20211227")
 
 source("FunctionLib2.R")
 ################################################
@@ -49,17 +49,24 @@ FOC_Ratio <- rep(0,max(data$country))
 
 b <-rep(0,max(data$country))
 
-name_country <- c("chile","argentina","colombia","mexico")
+name_country <- c("Chile","Argentina","Colombia","Mexico")
 
-Table_Coefficient <- matrix(0,14,4)
+Table_Coefficient <- matrix(0,18,4)
 colnames(Table_Coefficient) <- name_country
-rownames(Table_Coefficient) <- c("mu_i"," ","sigma_i"," ","mu_f"," ","sigma_f"," ","lambda"," ","eta"," ","b","w^*")
+rownames(Table_Coefficient) <- c("mu_i"," ","sigma_i"," ","mu_f"," ","sigma_f"," ","lambda"," ","eta"," ","b","w^*","E(w_i)","SD(w_i)","E(w_f)","SD(w_f)")
 Table_Coefficient <- as.table(Table_Coefficient)
 
 Table_Population <- matrix(0,7,4)
 colnames(Table_Population) <- name_country
 rownames(Table_Population) <- c("N_u","Percentage","N_{e_i}","Percentage","N_{e_f}","Percentage","N")
 Table_Population <- as.table(Table_Population)
+
+Table_Optimality <- matrix(0,1,4)
+colnames(Table_Optimality) <- name_country
+rownames(Table_Optimality) <- c("lambda")
+Table_Optimality <- as.table(Table_Optimality)
+
+
 
 for (count in 1:4){
   
@@ -82,11 +89,6 @@ for (count in 1:4){
   Nu[count] <- nrow(dataset[dataset$status == 1,])
   Nef[count] <- nrow(dataset[dataset$status == 2,])
   Nei[count] <- nrow(dataset[dataset$status == 3,])
-  
-  
-  
-  
-  
   
   
   ################################################
@@ -185,25 +187,34 @@ for (count in 1:4){
   # table part
   
   for (t in 1:num_intervaldim){
-    Table_Coefficient[2*t-1,count] <- sprintf("%.2f",temp_param[t])
+    Table_Coefficient[2*t-1,count] <- sprintf("%.4f",temp_param[t])
     if (temp_prb[t]<0.01){
-      Table_Coefficient[2*t,count] <- paste0("(",sprintf("%.2f",temp_std[t]),")^{***}")
+      Table_Coefficient[2*t,count] <- paste0("(",sprintf("%.4f",temp_std[t]),")^{***}")
       
     }else if (temp_prb[t]<0.05){
-      Table_Coefficient[2*t,count] <- paste0("(",sprintf("%.2f",temp_std[t]),")^{**}")
+      Table_Coefficient[2*t,count] <- paste0("(",sprintf("%.4f",temp_std[t]),")^{**}")
     }else if (temp_prb[t]<0.1){
-      Table_Coefficient[2*t,count] <- paste0("(",sprintf("%.2f",temp_std[t]),")^{*}")
+      Table_Coefficient[2*t,count] <- paste0("(",sprintf("%.4f",temp_std[t]),")^{*}")
       
     }else{
-      Table_Coefficient[2*t,count] <- paste0("(",sprintf("%.2f",temp_std[t]),")")
+      Table_Coefficient[2*t,count] <- paste0("(",sprintf("%.4f",temp_std[t]),")")
       
     }
     
     
   }
   
-  Table_Coefficient[13,count] <- b[count]
-  Table_Coefficient[14,count] <- w_star[count]
+  Table_Coefficient[13,count] <-sprintf("%.4f", b[count])
+  Table_Coefficient[14,count] <- sprintf("%.4f", w_star[count])
+  # Ei
+  Table_Coefficient[15,count] <- sprintf("%.4f", exp(temp_param[1]+temp_param[2]^2/2))
+  # SDi  
+  Table_Coefficient[16,count] <- sprintf("%.4f", sqrt((exp(temp_param[2]^2)-1)*exp(2*temp_param[1]+temp_param[2]^2)))
+  #Ef
+  Table_Coefficient[17,count] <-sprintf("%.4f", exp(temp_param[3]+temp_param[4]^2/2))
+  # SDf
+  Table_Coefficient[18,count] <-sprintf("%.4f", sqrt((exp(temp_param[4]^2)-1)*exp(2*temp_param[3]+temp_param[4]^2)))
+  
   
   Table_Population[1,count] <- paste0(Nu[count])
   Table_Population[3,count] <- Nei[count]
@@ -215,8 +226,11 @@ for (count in 1:4){
   
 }
 
+Table_Optimality[1,] <- paste0(sprintf("%.4f",FOC_Lambda))
+
 print(xtable(Table_Coefficient, type = "latex"), file = "Table_Coefficient.tex")
 print(xtable(Table_Population, type = "latex"), file = "Table_Population.tex")
+print(xtable(Table_Optimality, type = "latex"), file = "Table_Optimality.tex")
 
 
 

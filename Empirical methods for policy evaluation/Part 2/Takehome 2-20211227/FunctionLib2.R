@@ -231,17 +231,16 @@ LogLikelihood2 <- function(parameters,dataset,count,Nu,Nei,Nef){
 
 
 
-FOCdiff <- function(LLK){
-    temp_num_col <- ncol(LLK)
-    temp_index <- which.min(LLK[,temp_num_col])
-    temp_param <- LLK[temp_index,1:num_intervaldim]
-    temp_FOC_Lambda <- lambda(mu_i = temp_param[1],sigma_i = temp_param[2],mu_f = temp_param[3],sigma_f = temp_param[4],dataset=dataset,count=count,Nu = Nu,Nei=Nei,Nef=Nef)
-    temp_FOC_Eta  <- eta(lambda = temp_param[5],mu_i = temp_param[1],sigma_i = temp_param[2],mu_f = temp_param[3],sigma_f = temp_param[4],dataset=dataset,count=count,Nu = Nu,Nei=Nei,Nef=Nef)
-    temp_FOC_Eta2   <- eta2(lambda = temp_param[5],mu_i = temp_param[1],sigma_i = temp_param[2],mu_f = temp_param[3],sigma_f = temp_param[4],dataset=dataset,count=count,Nu = Nu,Nei=Nei,Nef=Nef)
-    temp_FOC_Ratio <- ratioGandN(mu_i = temp_param[1],sigma_i = temp_param[2],mu_f = temp_param[3],sigma_f = temp_param[4],dataset=dataset,count=count,Nu = Nu,Nei=Nei,Nef=Nef)
-    temp_vec_diff <- c(abs(temp_FOC_Lambda/temp_param[5]-1),abs(temp_FOC_Eta/temp_param[6]-1),abs(temp_FOC_Eta2/temp_param[6]-1),abs(temp_FOC_Ratio-1))
-    team_diff <- sum(temp_vec_diff)
-    return(team_diff)
+FOCdiff <- function(LLK_maxLik){
+    temp_index <- which.min(LLK_maxLik[,ncol(LLK_maxLik)])
+    temp_param <- LLK_maxLik[temp_index,1:num_intervaldim]
+    temp_std   <- LLK_maxLik[temp_index,(1+num_intervaldim):(2*num_intervaldim)]
+    temp_prb   <- LLK_maxLik[temp_index,(1+3*num_intervaldim):(4*num_intervaldim)]
+    FOC_Lambda[count] <- lambda(mu_i = temp_param[1],sigma_i = temp_param[2],mu_f = temp_param[3],sigma_f = temp_param[4],dataset=dataset,count=count,Nu = Nu,Nei=Nei,Nef=Nef)
+    FOC_Eta[count]  <- eta(lambda = temp_param[5],mu_i = temp_param[1],sigma_i = temp_param[2],mu_f = temp_param[3],sigma_f = temp_param[4],dataset=dataset,count=count,Nu = Nu,Nei=Nei,Nef=Nef)
+    FOC_Eta2[count]   <- eta2(lambda = temp_param[5],mu_i = temp_param[1],sigma_i = temp_param[2],mu_f = temp_param[3],sigma_f = temp_param[4],dataset=dataset,count=count,Nu = Nu,Nei=Nei,Nef=Nef)
+    FOC_Ratio[count] <- ratioGandN(mu_i = temp_param[1],sigma_i = temp_param[2],mu_f = temp_param[3],sigma_f = temp_param[4],dataset=dataset,count=count,Nu = Nu,Nei=Nei,Nef=Nef)
+    
 }
 
 
