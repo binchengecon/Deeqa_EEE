@@ -1,0 +1,3 @@
+Variable,Description,Source
+year,year of election,annual directories of US newspapers (exact source depends on time period; see the data section of the paper)
+polaff,Political affiliation (=D if declared to be Democratic during the majority period of having an affiliation and vice versa for R/I),annual directories of US newspapers (exact source depends on time period)

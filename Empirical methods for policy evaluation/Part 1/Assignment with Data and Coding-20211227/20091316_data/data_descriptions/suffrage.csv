@@ -1,0 +1,7 @@
+Variable,Description,Source
+year,Year of election,
+state,State USPS code,
+st,State FIPS code,
+numdailies, Number of daily newspapers in the state at the year,annual directories of US newspapers (exact source depends on time period)
+suf,dummy for whether women have the right to vote,"Lott, J.R. and Kenny, L.W., 1999, Journal of Political Economy. Table 1, pg 1167."
+sufsample,suf==1 and in our sample,"Lott, J.R. and Kenny, L.W., 1999, Journal of Political Economy. Table 1, pg 1167."

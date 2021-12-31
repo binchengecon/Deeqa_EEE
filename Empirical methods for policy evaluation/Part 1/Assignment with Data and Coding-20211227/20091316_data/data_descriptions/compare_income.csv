@@ -1,0 +1,4 @@
+Variable,Description,Source
+state,State USPS code,
+lmfg,Log of the per capita manufacturing output,"interpolated from ICPSR 2896, the Census, and NHGIS"
+lincome,Log of per-capita income,Easterlin 1960

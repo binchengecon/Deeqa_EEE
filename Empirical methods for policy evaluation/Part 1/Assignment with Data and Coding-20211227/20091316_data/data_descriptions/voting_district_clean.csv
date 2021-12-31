@@ -1,0 +1,24 @@
+Variable,Description,Source
+year,Year of Election,
+numdailies,sum of number of dailies in county-year for the district, annual directories of US newspapers (exact source depends on time period; see the data section of the paper)
+D_ishare_foreign,change in interpolated share of white population that is foreign-born,
+D_ishare_manuf,change in interpolated population employed in manufacturing as a share of the population that is males 21 and older,
+D_ishare_male,change in interpolated share of population that is males 21 and older,
+D_ishare_urb,change in interpolated share of population living in cities with 25000+ residents,
+D_ishare_town,change in interpolated share of population living in towns with 2500+ residents,
+D_ishare_white,change in interpolated share of population that is white,
+stdist,= group(state district),
+styr,group(state year),
+multi,change in number of dailies >=2, annual directories of US newspapers (exact source depends on time period; see the data section of the paper)
+D_ilog_manufout_ctrl,change in (interpolated) log of manufacturing output per capita,
+mis_D_ishare_foreign,dummy for whether D_ishare_foreign is missing,
+mis_D_ishare_manuf,analogous to above,
+mis_D_ishare_male,analogous to above,
+mis_D_ishare_urb,analogous to above,
+mis_D_ishare_town,analogous to above,
+mis_D_ishare_white,analogous to above,
+mis_D_ilog_manufout_ctrl,analogous to above,
+mainsample_inc,=1 if mainsample==1 and is included in the sample for the study on House incumbency,
+uncontested_inc,incumbent candidate is uncontested,various data sources (see online appendix)
+mainsample_unc,= mainsample_inc & inc_cand_h_index~=0 & L.inc_cand_h_index~=0,
+congshare_inccand,Congressional incumbent vote share,various data sources (see online appendix)

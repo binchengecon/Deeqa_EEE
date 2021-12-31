@@ -1,0 +1,7 @@
+Variable,Description,Source
+numdailies1880,number of dailies in the city in 1880,annual directories of US newspapers (exact source depends on time period)
+city,City name,
+journalists_1870,number of journalists in 1870,U.S. Decennial Census
+journalists_1880,analogous to above,U.S. Decennial Census
+chnjournalists,journalists_1880 - journalists_1870,
+chndailies,numdailies1880 - numdailies1869,

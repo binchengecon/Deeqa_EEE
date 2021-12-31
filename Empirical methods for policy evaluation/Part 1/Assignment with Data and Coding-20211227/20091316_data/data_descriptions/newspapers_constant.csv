@@ -1,0 +1,4 @@
+Variable,Description,Source
+permid,Newspaper ID,we created this ID (unique for each newspaper across years) from annual directories of US newspapers (exact source depends on time period)
+polaff,Political affiliation (=D if declared to be Democratic during the majority period of having an affiliation and vice versa for R/I),annual directories of US newspapers (exact source depends on time period)
+nonpol,dummy for whether the newspaper emphasizes non-political content,annual directories of US newspapers (exact source depends on time period)

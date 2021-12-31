@@ -1,0 +1,92 @@
+Variable,Description,Source
+cnty90,State-County FIPS Code,U.S. Decennial Census
+year,Year of Election,
+preseligible,estimated number of eligible presidential election voters,"from ICPSR 8611 for periods through 1972, then estimated from U.S. Decennial Census using the same methodology as ICPSR 8611 for periods after 1972"
+prestout,Presidential turnout,various data sources (see online appendix)
+congtout,Congressional turnout,various data sources (see online appendix)
+state,State USPS Code,
+pmsa90,Primary PMSA,U.S. Decennial Census
+border_changes,Number of Boarder Changes 1870-1960,County Longitudinal Template (1840-1990) ICPSR study number 6576
+st,State FIPS Code,
+nummarkets,number of cities in the county,U.S. Decennial Census
+ishare_urb,Interpolated share of population living in cities with 25000+ residents,"interpolated from ICPSR 2896, the Census, and NHGIS"
+D_ishare_foreign,change in interpolated share of white population that is foreign-born,"interpolated from ICPSR 2896, the Census, and NHGIS"
+D_ishare_manuf,change in interpolated population employed in manufacturing as a share of the population that is males 21 and older,"interpolated from ICPSR 2896, the Census, and NHGIS"
+D_ishare_male,change in interpolated share of population that is male and above 21 of age,"interpolated from ICPSR 2896, the Census, and NHGIS"
+D_ishare_urb,change in interpolated share of population living in cities with 25000+ residents,"interpolated from ICPSR 2896, the Census, and NHGIS"
+D_ishare_town,change in interpolated share of population living in towns with 2500+ residents,"interpolated from ICPSR 2896, the Census, and NHGIS"
+D_ishare_white,change in interpolated share of population that is white,"interpolated from ICPSR 2896, the Census, and NHGIS"
+D_ilog_manufoutputpercap,change in interpolated log manufacturing output per capita ,"interpolated from ICPSR 2896, the Census, and NHGIS"
+numdailies,number of dailies in the county-year, annual directories of US newspapers (exact source depends on time period; see the data section of the paper)
+circ,total circulation in the county-year, annual directories of US newspapers (exact source depends on time period; see the data section of the paper)
+miss_circ,number of newspapers in the county-year that have missing circulation data, annual directories of US newspapers (exact source depends on time period; see the data section of the paper)
+num_polaff_R,number of newspapers that declared Republican, annual directories of US newspapers (exact source depends on time period; see the data section of the paper)
+num_polaff_D,number of newspapers that declared Democratic,annual directories of US newspapers (exact source depends on time period; see the data section of the paper)
+num_polaff_I,number of newspapers that declared Independent, annual directories of US newspapers (exact source depends on time period; see the data section of the paper)
+num_polaff_none,number of newspapers that did not declare affiliation, annual directories of US newspapers (exact source depends on time period; see the data section of the paper)
+num_nonpol,number of newspapers that are non-political in nature, annual directories of US newspapers (exact source depends on time period; see the data section of the paper)
+numdailies_y4,number of dailies that last more than 4 years, annual directories of US newspapers (exact source depends on time period; see the data section of the paper)
+num_polaff_R_y4,number of newspapers that declared Republican that last more than 4 years, annual directories of US newspapers (exact source depends on time period; see the data section of the paper)
+num_polaff_D_y4,number of newspapers that declared Democratic that last more than 4 years,annual directories of US newspapers (exact source depends on time period; see the data section of the paper)
+entry_conf,confirmed entry, annual directories of US newspapers (exact source depends on time period; see the data section of the paper)
+entry_polaff_R,analogous to above but for Republican paper, annual directories of US newspapers (exact source depends on time period; see the data section of the paper)
+entry_polaff_D,analogous to above but for Democratic paper, annual directories of US newspapers (exact source depends on time period; see the data section of the paper)
+readshare_hhld,2*circ/preseligible,
+redistricted,whether the county border changed between 1870 and 1960,ICPSR 6576 
+inc_unkwn_h,incumbent indeterminate - House,various data sources (see online appendix)
+inc_run_unkwn_h,incumbent candidate indeterminate - House,various data sources (see online appendix)
+num_always_R,number of newspapers that are always Rep, annual directories of US newspapers (exact source depends on time period; see the data section of the paper)
+num_always_D,number of newspapers that are always Dem, annual directories of US newspapers (exact source depends on time period; see the data section of the paper)
+D_ishare_lit,change in share of population that is literate,"interpolated from ICPSR 2896, the Census, and NHGIS"
+circ_elig,circulation per eligible voter, 
+D_lcirc_continue,difference in log circulation between newspapers that ended on this given year and those that started on this year, 
+circrepshare,Republican newspaper share of total circulation - Democratic newspaper share of total circulation, annual directories of US newspapers (exact source depends on time period; see the data section of the paper)
+lpresttlvote,log of total votes for the presidential election,various data sources (see online appendix)
+lpreseligible,analogous to above,"from ICPSR 8611 for periods through 1972, then estimated from U.S. Decennial Census using he same methodology as ICPSR 8611 for periods after 1972"
+styr,group(state year), 
+num_changes,total changes in number of dailies during the years in our sample (1872-1928), annual directories of US newspapers (exact source depends on time period; see the data section of the paper)
+mainsample,a dummy to indicate if the observation is included in the sample, 
+mainsample_circ,mainsample==1 and changes in circ_elig is less than 100%, 
+mainsample_time,created in the same way as mainsample but we extend the time till 2004, 
+mainsample_time_circ,analogous to above, 
+samplemean_preseligible,mean number of people eligible to vote for presidential election in our sample for each county, 
+samplemean_numdailies,analogous to above, 
+samplemean_outputpercap,analogous to above, 
+samplemean_ishare_foreign,analogous to above, 
+samplemean_ishare_manuf,analogous to above, 
+samplemean_ishare_male,analogous to above, 
+samplemean_ishare_urb,analogous to above, 
+samplemean_ishare_town,analogous to above, 
+samplemean_ishare_white,analogous to above, 
+newspaper,==1 if year<1932, 
+radio,==1 if 1932<=year<1956, 
+tv,==1 if year>1956, 
+D_ilog_manufout_ctrl,change in (interpolated) log of manufacturing output per capita, 
+mis_D_ishare_foreign,dummy for whether D_ishare_foreign is missing, 
+mis_D_ishare_manuf,analogous to above, 
+mis_D_ishare_male,analogous to above, 
+mis_D_ishare_urb,analogous to above, 
+mis_D_ishare_town,analogous to above, 
+mis_D_ishare_white,analogous to above, 
+mis_D_ilog_manufout_ctrl,analogous to above, 
+mis_D_ishare_lit,analogous to above, 
+numcomp,=numdailies if numdailies<3; =3 if numdailies>=3, 
+D_prestout_state,average change in presidential turnout of the state (excluding the county of the observation), 
+presrepshare,Republican share of votes in the presidential election,various data sources (see online appendix)
+presevenness,equals 1-ABS(presrepshare-0.5),various data sources (see online appendix)
+congrepshare,Republican share of votes in the congressional election,various data sources (see online appendix)
+congshare,ratio between congressional election turnout and presidential election turnout,various data sources (see online appendix)
+D_congtout_long,change in congressional election turnout between six years ago and two years later,various data sources (see online appendix)
+govrepshare,Republican share of votes in the governor election,various data sources (see online appendix)
+govtout,turnout rate for governor election,various data sources (see online appendix)
+govshare,govtout/prestout,various data sources (see online appendix)
+senrepshare,Republican share of votes in the senate election,various data sources (see online appendix)
+sentout,turnout rate for senator election,various data sources (see online appendix)
+state_presevenness,equals 1-abs(state_presrepshare-0.5), 
+multi,change in number of dailies >=2, 
+inc_cand_h_index,=1/-1 if incumbent candidate is running for House election and is Republican/Democrat, 
+mainsample_inc,=1 if mainsample==1 and is included in the sample for the study on House incumbency, 
+mainsample_time_inc,analogous to above but expand time period till 2004 (similar to mainsample VS mainsample_time), 
+congshare_inccand,Congressional incumbent vote share,various data sources (see online appendix)
+mainsample_inc_gov,if mainsample==1 and is included in the sample for the study on governor incumbency, 
+govshare_inccand,= govrepshare*(inc_cand_g_index==1)+(1-govrepshare)*(inc_cand_g_index==-1); inc_cand_g_index is defined analogously to inc_cand_h_index but is for governors instead of the House,

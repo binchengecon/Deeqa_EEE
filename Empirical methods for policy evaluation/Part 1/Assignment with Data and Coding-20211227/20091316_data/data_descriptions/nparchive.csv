@@ -1,0 +1,11 @@
+Variable,Description,Source
+permid,Newspaper ID,we created this ID (unique for each newspaper across years) from annual directories of US newspapers (exact source depends on time period)
+year,year of election,annual directories of US newspapers (exact source depends on time period; see the data section of the paper)
+polaff_now,Political affiliation of the newspaper at the given year,annual directories of US newspapers (exact source depends on time period)
+polaff,Political affiliation (=D if declared to be Democratic during the majority period of having an affiliation and vice versa for R/I),annual directories of US newspapers (exact source depends on time period)
+presrepshare,the share of votes that Republicans got during the presidential election,various data sources (see online appendix)
+rep_share_nparchive,"share of keywords match for Republicans presidential candidates (see the ""Measures of Newspaper Content"" subsection in the ""Data"" section of the paper for details)",newspaperarchive.com
+tot_count_nparchive,"total count of keywords matches for presidential election keywords (see the ""Measures of Newspaper Content"" subsection in the ""Data"" section of the paper for details)",newspaperarchive.com
+polaff_rep,dummy for polaff==R,
+polaff_now_ind,dummy for polaff_now==I,
+polaff_rep_now_ind,dummy for polaff==R && polaff_now==I,

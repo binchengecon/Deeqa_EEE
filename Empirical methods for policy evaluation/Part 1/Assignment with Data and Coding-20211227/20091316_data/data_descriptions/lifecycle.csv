@@ -1,0 +1,15 @@
+Variable,Description,Source
+permid,Newspaper ID,we created this ID (unique for each newspaper across years) from annual directories of US newspapers (exact source depends on time period)
+year,,
+lifespan,Number of years present in our data,annual directories of US newspapers (exact source depends on time period)
+yeartype,=1 if it is the last year that the newspaper exist in the data (1 overwrites -1);=-1 if it is the first year;=0 otherwise.,
+lcirc,Log of total circulation,annual directories of US newspapers (exact source depends on time period)
+circtype_group,group(circtype circsworn) where circtype indicates the source of the circulation data and circsworn is a dummy on whether the newspaper has sworn on the circulation they report,annual directories of US newspapers (exact source depends on time period)
+L_circtype_group,Lagged value of circtype_group,
+licitypop,Log of city population,U.S. Decennial Census
+mainsample, =1 if included in the sample,
+zsince_entry2,=1 if mainsample==1 and it has been 4 years since the newspaper started,
+zsince_entry3,=1 if mainsample==1 and it has been 8 years since the newspaper started,
+zto_exit1,=1 if mainsample==1 and the newspaper will exit the market in 0 years,
+zto_exit2,=1 if mainsample==1 and the newspaper will exit the market in 4 years,
+circ_norm,circ/circ_index where circ_index is the sum of the mean changes in log-circulation since the beginning of our data,annual directories of US newspapers (exact source depends on time period)
