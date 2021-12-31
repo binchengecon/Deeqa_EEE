@@ -66,7 +66,10 @@ colnames(Table_Optimality) <- name_country
 rownames(Table_Optimality) <- c("lambda")
 Table_Optimality <- as.table(Table_Optimality)
 
-
+ExpectValueEmploy <- matrix(0,2,4)
+colnames(ExpectValueEmploy) <- name_country
+rownames(ExpectValueEmploy) <- c("E_{e_i}(E(omega_i))","E_{e_f}(E(omega_f))")
+ExpectValueEmploy <- as.table(ExpectValueEmploy)
 
 for (count in 1:4){
   

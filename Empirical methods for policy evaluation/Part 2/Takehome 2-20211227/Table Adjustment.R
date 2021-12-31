@@ -3,8 +3,8 @@
 # load("Result Collection.RData")
 
 # 
-# LLK_maxLik <- LLK_maxLik_chile
-# count <- 1
+LLK_maxLik <- LLK_maxLik_chile
+count <- 1
 
 # LLK_maxLik <- LLK_maxLik_argentina
 # count <- 2
@@ -12,8 +12,8 @@
 # LLK_maxLik <- LLK_maxLik_colombia
 # count <- 3
 # 
-LLK_maxLik <- LLK_maxLik_mexico
-count <- 4
+# LLK_maxLik <- LLK_maxLik_mexico
+# count <- 4
 
 dataset <- data %>% filter(country == count)
 
@@ -80,7 +80,9 @@ Table_Population[2,count] <- paste0(sprintf("%.2f",Nu[count]/N[count]*100))
 Table_Population[4,count] <- paste0(sprintf("%.2f",Nei[count]/N[count]*100))
 Table_Population[6,count] <- paste0(sprintf("%.2f",Nef[count]/N[count]*100))
 
+ExpectValueEmploy[1,count]<-sprintf("%.4f", (exp(temp_param[1]+temp_param[2]^2/2)+temp_param[6]*w_star[count]/rho)/(temp_param[6]+rho))
+ExpectValueEmploy[2,count]<-sprintf("%.4f", (exp(temp_param[3]+temp_param[4]^2/2)+temp_param[6]*w_star[count]/rho)/(temp_param[6]+rho))
 
-# 
-print(xtable(Table_Coefficient, type = "latex"), file = "Table_Coefficient.tex")
-print(xtable(Table_Population, type = "latex"), file = "Table_Population.tex")
+# print(xtable(Table_Coefficient, type = "latex"), file = "Table_Coefficient.tex")
+# print(xtable(Table_Population, type = "latex"), file = "Table_Population.tex")
+print(xtable(ExpectValueEmploy, type = "latex"), file = "ExpectValueEmploy.tex")
