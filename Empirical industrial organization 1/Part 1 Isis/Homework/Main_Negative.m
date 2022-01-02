@@ -100,21 +100,21 @@ for i = 1:nb_grid
     obj_value(i) = gmm_blp(grid(i), sj, X0, fuel_cost, Endo, Z, Inverse_ZTZ, nu, delta_init, yearStarts, yearEnds);
 end
 
-% Plot optimized objective function with sigma over grid [-4,4]
-
+% % Plot optimized objective function with sigma over grid [-4,4]
+% 
 [~,Index_min_obj] = min(obj_value);
-
-figure 
-plot(grid, obj_value)
-hold on
-plot([grid(Index_min_obj);grid(Index_min_obj)], [min(obj_value); max(obj_value)], 'r', 'linewidth', 1.7)
-% gmm objective function is the lowest around sigma -0.3122
-xlabel('\sigma')
-ylabel('GMM objective function')
-title("\sigma =" + sigma_hat_Nfe)
-axis tight
-
-saveas(gcf, 'GMM_NfeNegativeSigma.jpg' );
+% 
+% figure 
+% plot(grid, obj_value)
+% hold on
+% plot([grid(Index_min_obj);grid(Index_min_obj)], [min(obj_value); max(obj_value)], 'r', 'linewidth', 1.7)
+% % gmm objective function is the lowest around sigma -0.3122
+% xlabel('\sigma')
+% ylabel('GMM objective function')
+% title("\sigma =" + sigma_hat_Nfe)
+% axis tight
+% 
+% saveas(gcf, 'GMM_NfeNegativeSigma.jpg' );
 
 % Exploration of Sigma with fminunc
 
@@ -140,19 +140,27 @@ alpha_hat_Nfe = beta_hat_Nfe(end-1);
 
 alpha_indi_Nfe =  alpha_hat_Nfe + nu*sigma_hat_Nfe;
 
-%Plot the distribution of the fuel cost sensitivities
-
-[f_alpha_Nfe, x_alpha_Nfe]= ksdensity(alpha_indi_Nfe);
-
-figure
-plot(x_alpha_Nfe, f_alpha_Nfe)
-xlabel('fuel cost sensitivity')
-ylabel('density')
+% %Plot the distribution of the fuel cost sensitivities
+% 
+% [f_alpha_Nfe, x_alpha_Nfe]= ksdensity(alpha_indi_Nfe);
+% 
+% figure
+% plot(x_alpha_Nfe, f_alpha_Nfe)
+% xlabel('fuel cost sensitivity')
+% ylabel('density')
 
 
 %% Part 1: Question 2
 
 % Construct Brand Dummy
+% dummy year
+
+year_fe = zeros(kt,T);
+for tt = 1:T
+    Jt = yearStarts(tt):yearEnds(tt);
+    year_fe(Jt,tt)=1;
+end
+year_fe (:, 1) = [];
 
 % dummy brand
 brand_fe = zeros(kt, max(num_brand));
@@ -181,19 +189,21 @@ for i = 1:nb_grid_fe
     obj_value_fe(i) = gmm_blp(grid_fe(i), sj, X0_fe, fuel_cost, Endo, Z_fe, Inverse_ZTZ_fe, nu, delta_init, yearStarts, yearEnds);
 end
 
+% % Plot optimized objective function with sigma over grid [-4,4]
+% 
 [~,Index_min_obj_fe] = min(obj_value_fe);
-% Plot optimized objective function with sigma over grid [-4,4]
+% 
+% figure
+% plot(grid_fe, obj_value_fe) % gmm objective function is the lowest around sigma  -0.4030
+% hold on
+% plot([grid_fe(Index_min_obj_fe);grid_fe(Index_min_obj_fe)], [min(obj_value_fe); max(obj_value_fe)], 'r',  'linewidth', 1.7)% gmm objective function is the lowest around sigma -0.4030
+% xlabel('\sigma')
+% ylabel('GMM objective function')
+% title("\sigma =" + sigma_hat_fe)
+% axis tight
+% 
+% saveas(gcf, 'GMM_feNegativeSigma.jpg' );
 
-figure
-plot(grid_fe, obj_value_fe) % gmm objective function is the lowest around sigma  -0.4030
-hold on
-plot([grid_fe(Index_min_obj_fe);grid_fe(Index_min_obj_fe)], [min(obj_value_fe); max(obj_value_fe)], 'r',  'linewidth', 1.7)% gmm objective function is the lowest around sigma -0.4030
-xlabel('\sigma')
-ylabel('GMM objective function')
-title("\sigma =" + sigma_hat_fe)
-axis tight
-
-saveas(gcf, 'GMM_feNegativeSigma.jpg' );
 % Exploration of Sigma with fminunc
 options = optimset('display', 'iter', 'tolX', 1e-4);
 
@@ -216,29 +226,128 @@ alpha_hat_fe = beta_hat_fe(5);
 
 alpha_indi_fe =  alpha_hat_fe + nu*sigma_hat_fe;
 
+% 
+% 
+% 
+% %Plot the distribution of the fuel cost sensitivities
+% [f_alpha_fe, x_alpha_fe]= ksdensity(alpha_indi_fe);
+% 
+% figure
+% plot(x_alpha_fe, f_alpha_fe)
+% xlabel('fuel cost sensitivity with brand fixed effect')
+% ylabel('density')
+% 
+% 
+% figure 
+% plot(x_alpha_fe, f_alpha_fe)
+% hold on
+% plot(x_alpha_Nfe, f_alpha_Nfe)
+% xlabel('Fuel cost sensitivity')
+% ylabel('Density')
+% legend('With brand fe','Without brand fe')
+% title("\sigma =" + sigma_hat_fe)
+% hold off
+% 
+% saveas(gcf,'sensitivityNegativeSigma.jpg');
 
 
-[f_alpha_fe, x_alpha_fe]= ksdensity(alpha_indi_fe);
-
-%Plot the distribution of the fuel cost sensitivities
-
-figure
-plot(x_alpha_fe, f_alpha_fe)
-xlabel('fuel cost sensitivity with brand fixed effect')
-ylabel('density')
+%% Part 1: Question 2.5
 
 
-figure 
-plot(x_alpha_fe, f_alpha_fe)
-hold on
-plot(x_alpha_Nfe, f_alpha_Nfe)
-xlabel('Fuel cost sensitivity')
-ylabel('Density')
-legend('With brand fe','Without brand fe')
-title("\sigma =" + sigma_hat_fe)
-hold off
+X0_fe2 = [X0 brand_fe year_fe];
+Z_fe2 = [X0_fe2 Data_Initial(:,12:23)];
+Inverse_ZTZ_fe2 = inv(Z_fe2'*Z_fe2);
 
-saveas(gcf,'sensitivityNegativeSigma.jpg');
+
+% Graphical Exploration of Sigma
+% Optimize objective function with sigma over grid [-4,4]
+
+grid_fe2 = [-10:0.5:10];
+
+% grid_fe = [0:0.1:4];
+nb_grid_fe2 = size(grid_fe2,2);
+obj_value_fe2 = zeros(nb_grid_fe2,1);
+
+for i = 1:nb_grid_fe2
+    obj_value_fe2(i) = gmm_blp(grid_fe2(i), sj, X0_fe2, fuel_cost, Endo, Z_fe2, Inverse_ZTZ_fe2, nu, delta_init, yearStarts, yearEnds);
+end
+
+% % Plot optimized objective function with sigma over grid [-4,4]
+% 
+[~,Index_min_obj_fe2] = min(obj_value_fe2);
+% 
+% figure
+% plot(grid_fe, obj_value_fe) % gmm objective function is the lowest around sigma  -0.4030
+% hold on
+% plot([grid_fe(Index_min_obj_fe);grid_fe(Index_min_obj_fe)], [min(obj_value_fe); max(obj_value_fe)], 'r',  'linewidth', 1.7)% gmm objective function is the lowest around sigma -0.4030
+% xlabel('\sigma')
+% ylabel('GMM objective function')
+% title("\sigma =" + sigma_hat_fe)
+% axis tight
+% 
+% saveas(gcf, 'GMM_feNegativeSigma.jpg' );
+
+% Exploration of Sigma with fminunc
+options = optimset('display', 'iter', 'tolX', 1e-4);
+
+sigma_hat_fe2 = fminunc(@(sigma)gmm_blp(sigma, sj, X0_fe2, fuel_cost, Endo, Z_fe2, Inverse_ZTZ_fe2, nu, delta_init, ...
+    yearStarts, yearEnds),grid_fe2(Index_min_obj_fe2), options); % -0.4 initial guess, sigma = -0.4030
+ 
+
+% Inversion of the market share using sigma_hat_fe
+delta_fe2 = zeros(kt,1);
+for tt = 1: T %for each time 2003-2008
+    Jt = yearStarts(tt):yearEnds(tt);  
+    [delta_fe2(Jt), pb_cv_fe2(tt)] = blp_contraction(sigma_hat_fe2, sj(Jt), delta_init(Jt), nu,fuel_cost(Jt,:));   
+end
+
+% IV regression without FE
+[beta_hat_fe2] = ivregression(delta_fe2, X0_fe2, Endo, Z_fe2);
+
+% fuel_cost, brand
+alpha_hat_fe2 = beta_hat_fe2(5);
+
+alpha_indi_fe2 =  alpha_hat_fe2 + nu*sigma_hat_fe2;
+
+%% Part 1: Question 2.8
+
+% Collect data into tables for exportation into Latex
+
+
+Table_Regression = zeros(7,3);
+
+% No FE case
+% beta_hat_Nfe: 1, cy,w,hp,    fuelcost, price
+
+Table_Regression(1:5,1) = beta_hat_Nfe(1:5);
+Table_Regression(6,1)   = sigma_hat_Nfe;
+Table_Regression(7,1)   = beta_hat_Nfe(end);
+
+%FE case with brand effect
+% beta_hat_fe: 1, cy,w,hp, fuelcost,   brand(40 brands, 39 brand_fe) , price
+%              1  2-4         5          6-44,                          45
+
+Table_Regression(1:5,2) = beta_hat_fe(1:5);
+Table_Regression(6,2) = sigma_hat_fe;
+Table_Regression(7,2)   = beta_hat_fe(end);
+
+%FE case with brand and year effect
+% beta_hat_fe2: 1, cy,w,hp, fuelcost,   brand(40 brands, 39 brand_fe) , year (6 years, 5 year_fe), price
+%              1    2-4       5          6-44,                          45-49                      50
+
+Table_Regression(1:5,3) = beta_hat_fe2(1:5);
+Table_Regression(6,3) = sigma_hat_fe2;
+Table_Regression(7,3)   = beta_hat_fe2(end);
+
+
+
+ReResultVarNames = {'No Fixed Effect','With Brand Fixed Effect','With Brand and Year Fixed Effect'};
+% Table_CFResult = renamevars(Table_CFResult,allvars,CFResultNames);
+ReResultRowNames = {'Intercept','Cylinder','Weight','Horsepower','Fuel Cost','Sigma','Price'};
+
+Table_Regression   = array2table(Table_Regression,'VariableNames',ReResultVarNames,'RowNames',ReResultRowNames);
+
+
 %% Part 1: Question 3
 
 
@@ -296,29 +405,30 @@ omega_tilde = omega.*own;
 
 % marginal cost
 mc_2008 = price_2008 + omega_tilde \ sj_2008;
-[f_mc_2008, x_mc_2008]= ksdensity(mc_2008,'Support','positive','BoundaryCorrection','reflection');
 
-%Plot the distribution of marginal cost
+% %Plot the distribution of marginal cost
+% [f_mc_2008, x_mc_2008]= ksdensity(mc_2008,'Support','positive','BoundaryCorrection','reflection');
 
-figure
-plot(x_mc_2008, f_mc_2008)
-axis([min(x_mc_2008) max(x_mc_2008) 0 max(1.05*f_mc_2008)])
-xlabel('Distribution of Marginal Cost in 2008')
-ylabel('density')
-title("\sigma =" + sigma_hat_fe)
-
-
-saveas(gcf,'MarginalCost2008NegativeSigma.jpg');
+% figure
+% plot(x_mc_2008, f_mc_2008)
+% axis([min(x_mc_2008) max(x_mc_2008) 0 max(1.05*f_mc_2008)])
+% xlabel('Distribution of Marginal Cost in 2008')
+% ylabel('density')
+% title("\sigma =" + sigma_hat_fe)
+% 
+% 
+% saveas(gcf,'MarginalCost2008NegativeSigma.jpg');
 
 Avg_price_2008 = mean(price_2008);
 Avg_markup_2008_Def1 = mean((price_2008-mc_2008)./price_2008);
-Avg_markup_2008_Def2 = mean((price_2008)./mc_2008);
+Avg_markup_2008_Def2 = mean((price_2008)./mc_2008-1);
 
 profit_temp =  (price_2008-mc_2008).*sj_2008.*nb_households(Jt_2008)*10000/1000000; 
 
 Sum_profit = sum(profit_temp);
 
-Sum_cs = consumer(delta_fe_2008,alpha_hat_fe, fuel_cost_2008, sigma_hat_fe,nu,ns)*max(nb_households(Jt_2008))/10000;
+Sum_cs = consumer(delta_fe_2008,alpha_hat_fe, fuel_cost_2008, sigma_hat_fe,nu,ns)*max(nb_households(Jt_2008))*10000/1000000;
+
 
 
 %% Part 2: Counterfactual Simulations
@@ -431,24 +541,78 @@ end
 Matrix_price(:,2*size(grid_tax,2)+1) = price_2008;
 
 
-figure
-plot(grid_tax,Array_Sum_tax_revenue_CF);
-hold on
-plot(grid_tax,Array_Sum_profit_CF);
-plot(grid_tax,Array_Sum_cs_CF);
-legend('Tax Revenue', 'Profit', 'ConsumerSurplus')
-xlabel('Tax Rate')
-ylabel('Amount')
-title("\sigma =" + sigma_hat_fe)
-axis tight
-hold off
+% figure
+% plot(grid_tax,Array_Sum_tax_revenue_CF);
+% hold on
+% plot(grid_tax,Array_Sum_profit_CF);
+% plot(grid_tax,Array_Sum_cs_CF);
+% legend('Tax Revenue', 'Profit', 'ConsumerSurplus')
+% xlabel('Tax Rate')
+% ylabel('Amount')
+% title("\sigma =" + sigma_hat_fe)
+% axis tight
+% hold off
+% 
+% saveas(gcf,'Tax_RevenueNegativeSigma.jpg')
 
-saveas(gcf,'Tax_RevenueNegativeSigma.jpg')
+% save changeendNegativeSigma.mat
 
-save changeendNegativeSigma.mat
+%% Part 2: Question 2.5
+
+Table_CFResult   = zeros(7,4);
+% t=0
+Table_CFResult(1,1) = mean(mc_2008);
+Table_CFResult(2,1) = Array_Avg_price_2008_CF(1);
+Table_CFResult(3,1) = Array_Avg_markup_2008_CF_Def1(1);
+Table_CFResult(4,1) = Array_Avg_markup_2008_CF_Def2(1)-1;
+Table_CFResult(5,1) = Array_Sum_profit_CF(1);
+Table_CFResult(6,1) = Array_Sum_cs_CF(1);
+Table_CFResult(7,1) = Array_Sum_tax_revenue_CF(1);
+
+
+% t = 10
+Table_CFResult(1,2) = mean(mc_2008);
+Table_CFResult(2,2) = Array_Avg_price_2008_CF(11);
+Table_CFResult(3,2) = Array_Avg_markup_2008_CF_Def1(11);
+Table_CFResult(4,2) = Array_Avg_markup_2008_CF_Def2(11)-1;
+Table_CFResult(5,2) = Array_Sum_profit_CF(11);
+Table_CFResult(6,2) = Array_Sum_cs_CF(11);
+Table_CFResult(7,2) = Array_Sum_tax_revenue_CF(11);
+
+% t=
+[~,Index_Max_TaxR] = max(Array_Sum_tax_revenue_CF);
+taxrate_optimal    = grid_tax(Index_Max_TaxR);
+
+Table_CFResult(1,3) = mean(mc_2008);
+Table_CFResult(2,3) = Array_Avg_price_2008_CF(Index_Max_TaxR);
+Table_CFResult(3,3) = Array_Avg_markup_2008_CF_Def1(Index_Max_TaxR);
+Table_CFResult(4,3) = Array_Avg_markup_2008_CF_Def2(Index_Max_TaxR)-1;
+Table_CFResult(5,3) = Array_Sum_profit_CF(Index_Max_TaxR);
+Table_CFResult(6,3) = Array_Sum_cs_CF(Index_Max_TaxR);
+Table_CFResult(7,3) = Array_Sum_tax_revenue_CF(Index_Max_TaxR);
+
+% t=100
+
+Table_CFResult(1,4) = mean(mc_2008);
+Table_CFResult(2,4) = Array_Avg_price_2008_CF(100);
+Table_CFResult(3,4) = Array_Avg_markup_2008_CF_Def1(100);
+Table_CFResult(4,4) = Array_Avg_markup_2008_CF_Def2(100)-1;
+Table_CFResult(5,4) = Array_Sum_profit_CF(100);
+Table_CFResult(6,4) = Array_Sum_cs_CF(100);
+Table_CFResult(7,4) = Array_Sum_tax_revenue_CF(100);
+
+
+Tax_rate = [0,10,taxrate_optimal,100];
+allvars = 1:width(Table_CFResult);
+CFResultVarNames = append("Tax Rate =",string(Tax_rate));
+% Table_CFResult = renamevars(Table_CFResult,allvars,CFResultNames);
+CFResultRowNames = {'Marginal Cost','Average Price', 'Markup (1-c/p)','Markup (p/c-1)','Total Profit', 'Total Consumer Surplus', 'Total Tax Revenue'};
+
+Table_CFResult   = array2table(Table_CFResult,'VariableNames',CFResultVarNames,'RowNames',CFResultRowNames);
+
 %% A quick look into results of simulation without waiting for loops
 % 
-% load changeendNegativeSigma.mat;
+load changeendNegativeSigma.mat;
 % 
 % for t = 1:size(grid_tax,2)
 % 
@@ -500,4 +664,124 @@ save changeendNegativeSigma.mat
 % legend('Tax', 'Profit', 'ConsumerSurplus')
 % axis tight
 % hold off
+
+%% Figure
+
+% Plot optimized objective function with sigma_Nfe over grid [-4,4]
+
+[~,Index_min_obj] = min(obj_value);
+
+figure 
+plot(grid, obj_value)
+hold on
+plot([grid(Index_min_obj);grid(Index_min_obj)], [min(obj_value); max(obj_value)], 'r', 'linewidth', 1.7)
+% gmm objective function is the lowest around sigma -0.3122
+xlabel('\sigma')
+ylabel('GMM objective function')
+title("\sigma =" + sigma_hat_Nfe)
+axis tight
+
+saveas(gcf, 'GMM_NfeNegativeSigma.jpg' );
+saveas(gcf, 'GMM_NfeNegativeSigma.pdf' );
+
+%Plot the distribution of the fuel cost sensitivities
+
+[f_alpha_Nfe, x_alpha_Nfe]= ksdensity(alpha_indi_Nfe);
+
+% figure
+% plot(x_alpha_Nfe, f_alpha_Nfe)
+% xlabel('fuel cost sensitivity')
+% ylabel('density')
+
+% Plot optimized objective function with sigma_fe over grid [-4,4]
+
+[~,Index_min_obj_fe] = min(obj_value_fe);
+
+figure
+plot(grid_fe, obj_value_fe) % gmm objective function is the lowest around sigma  -0.4030
+hold on
+plot([grid_fe(Index_min_obj_fe);grid_fe(Index_min_obj_fe)], [min(obj_value_fe); max(obj_value_fe)], 'r',  'linewidth', 1.7)% gmm objective function is the lowest around sigma -0.4030
+xlabel('\sigma')
+ylabel('GMM objective function')
+title("\sigma =" + sigma_hat_fe)
+axis tight
+
+saveas(gcf, 'GMM_feNegativeSigma.jpg' );
+saveas(gcf, 'GMM_feNegativeSigma.pdf' );
+
+
+
+% Plot the distribution of the fuel cost sensitivities_fe
+[f_alpha_fe, x_alpha_fe]= ksdensity(alpha_indi_fe);
+[f_alpha_fe2, x_alpha_fe2]= ksdensity(alpha_indi_fe2);
+
+% figure
+% plot(x_alpha_fe, f_alpha_fe)
+% xlabel('fuel cost sensitivity with brand fixed effect')
+% ylabel('density')
+
+% Plot the comparison of fuel cost sensitivity between Nfe and fe
+
+
+figure 
+plot(x_alpha_fe, f_alpha_fe)
+hold on
+plot(x_alpha_Nfe, f_alpha_Nfe)
+xlabel('Fuel cost sensitivity')
+ylabel('Density')
+legend('With brand fe','Without brand fe')
+title("\sigma =" + sigma_hat_fe)
+hold off
+
+saveas(gcf,'sensitivityNegativeSigma.jpg');
+saveas(gcf,'sensitivityNegativeSigma.pdf');
+
+figure 
+plot(x_alpha_fe, f_alpha_fe)
+hold on
+plot(x_alpha_Nfe, f_alpha_Nfe)
+plot(x_alpha_fe2, f_alpha_fe2)
+xlabel('Fuel cost sensitivity')
+ylabel('Density')
+legend('With brand fe','Without brand fe','with brand and year fe')
+title("\sigma_b =" + sigma_hat_fe +"    \sigma_{by} =" + sigma_hat_fe2)
+hold off
+
+saveas(gcf,'sensitivityNegativeSigma2.jpg');
+saveas(gcf,'sensitivityNegativeSigma2.pdf');
+
+%Plot the distribution of marginal cost
+
+[f_mc_2008, x_mc_2008]= ksdensity(mc_2008,'Support','positive','BoundaryCorrection','reflection');
+
+figure
+plot(x_mc_2008, f_mc_2008)
+axis([min(x_mc_2008) max(x_mc_2008) 0 max(1.05*f_mc_2008)])
+xlabel('Distribution of Marginal Cost in 2008')
+ylabel('density')
+title("\sigma =" + sigma_hat_fe)
+
+
+saveas(gcf,'MarginalCost2008NegativeSigma.jpg');
+saveas(gcf,'MarginalCost2008NegativeSigma.pdf');
+
+%Plot the distribution of tax,profit and consumer surplus
+
+figure
+plot(grid_tax,Array_Sum_tax_revenue_CF);
+hold on
+plot(grid_tax,Array_Sum_profit_CF);
+plot(grid_tax,Array_Sum_cs_CF);
+legend('Tax Revenue', 'Profit', 'ConsumerSurplus')
+xlabel('Tax Rate')
+ylabel('Amount')
+title("\sigma =" + sigma_hat_fe)
+axis tight
+hold off
+
+saveas(gcf,'Tax_RevenueNegativeSigma.jpg')
+saveas(gcf,'Tax_RevenueNegativeSigma.pdf')
+
+table2latex(Table_CFResult,'Table_CFResult.tex');
+table2latex(Table_Regression,'Table_Regression.tex');
 

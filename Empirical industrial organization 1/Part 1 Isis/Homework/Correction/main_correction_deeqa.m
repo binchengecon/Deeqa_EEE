@@ -1,6 +1,6 @@
 clear all
-cd 'C:\Users\33678\Desktop\Deeqa_EEE\Empirical industrial organization 1\Part 1 Isis\Homework'
-data = csvread('data.csv');
+cd 'C:\Users\33678\Desktop\Deeqa_EEE\Empirical industrial organization 1\Part 1 Isis\Homework\Correction'
+data = csvread('data2020.csv');
 
 year = data(:,1);
 
@@ -78,7 +78,7 @@ invZ_nofe = (z_nofe'*z_nofe)\eye(n_z);
 
 
 [sigma_hat_nofe] = fminunc(@(theta)gmm_random(theta, xo_nofe, price, price, nu,...
-    sj, z_nofe, invZ_nofe, y, marketStarts, marketEnds), 1.5, opt);
+    sj, z_nofe, invZ_nofe, y, marketStarts, marketEnds), -1.5, opt);
 
 mu_est_nofe = sigma_hat_nofe*price*nu;
 
@@ -286,9 +286,31 @@ legend('No FE', 'FE', 'G & H IV')
 axis tight
 hold off
 
-saveas(gcf, '/Users/isisdurrmeyer/Dropbox/Teaching_DEEQA_2020/Projects/Homework_2020/distri_alpha.pdf')
+% saveas(gcf, '/Users/isisdurrmeyer/Dropbox/Teaching_DEEQA_2020/Projects/Homework_2020/distri_alpha.pdf')
+%% Part 1: Question 3.5
 
+% Collect data into tables for exportation into Latex
+
+
+Table_Regression = zeros(7,2);
+Table_CFResult   = zeros(6,2);
+% No FE case
+% beta_hat_Nfe: 1, cy,w,hp,    fuelcost, price
+
+Table_Regression(1:5,1) = beta_hat_nofe(1:5);
+Table_Regression(6,1)   = sigma_hat_nofe;
+Table_Regression(7,1)   = beta_hat_nofe(end);
+
+%FE case
+% beta_hat_fe: 1, cy,w,hp, fuelcost,   brand(40 brands, 39 brand_fe) , price
+%              1  2-4         5          6-44,                          45
+
+Table_Regression(1:5,2) = beta_hat(1:5);
+Table_Regression(6,2) = sigma_hat;
+Table_Regression(7,2)   = beta_hat(end);
 %%%%%%%%%%%%%%%%%%%%%%%%%%PART 2 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
 %% initial situation
 Jt = marketStarts(T):marketEnds(T);
 

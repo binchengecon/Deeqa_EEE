@@ -1,4 +1,4 @@
-function [a, output] = profit(delta_np,price,alpha,I,mc)
+function [output] = profit(delta_np,price,alpha,I,mc)
 
 [~, sj]= mega(delta_np,price,alpha,I);
 
