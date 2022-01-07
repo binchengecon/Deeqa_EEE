@@ -1,5 +1,5 @@
 /// solution of assignment DEEQA 2020-2021
-cd "C:\Users\33678\Example"
+cd "C:\Users\33678\Desktop\Deeqa_EEE\Advanced econometrics and empirical economics\Part 1\Assisgnment\Solution"
 
 cap log close
 log using assignment,replace
