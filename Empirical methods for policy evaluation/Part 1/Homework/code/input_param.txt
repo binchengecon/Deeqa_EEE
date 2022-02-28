@@ -1,0 +1,30 @@
+***********************************************************
+*
+* input_param.txt: This file defines lists of variables
+*	and parameters that are inputs to Voting
+*	estimation.
+*
+***********************************************************
+
+samplestart 1872
+sampleend 1928
+datastart 1868
+dataend 2004
+maxpolyorder 3
+maxwindow 10
+maxhorizon 40
+localgraphwindow 6
+panelvar "cnty90"
+yearvar "year"
+delta 4
+polymidpoint .5
+maxchange -9999
+
+demolist "D_ishare_foreign D_ishare_manuf D_ishare_male D_ishare_urb D_ishare_town D_ishare_white D_ilog_manufout_ctrl"
+misdemolist "mis_D_ishare_foreign mis_D_ishare_manuf mis_D_ishare_male mis_D_ishare_urb mis_D_ishare_town mis_D_ishare_white mis_D_ilog_manufout_ctrl"
+demolevel "ishare_foreign ishare_manuf ishare_male ishare_urb ishare_town ishare_white"
+samplemean_demolevel "samplemean_ishare_foreign samplemean_ishare_manuf samplemean_ishare_male samplemean_ishare_urb samplemean_ishare_town samplemean_ishare_white"
+xlabel "-40 -36 -32 -28 -24 -20 -16 -12 -8 -4 0 4 8 12 16 20 24 28 32 36 40"
+xtitle "Years Relative to Event"
+multicontrol ""
+ifmulti ""

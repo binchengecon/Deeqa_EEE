@@ -1,0 +1,618 @@
+{smcl}
+{com}{sf}{ul off}{txt}{.-}
+      name:  {res}<unnamed>
+       {txt}log:  {res}C:\Users\33678\Desktop\Deeqa_EEE\Empirical methods for policy evaluation\Part 1\Homework\code\Log_BinCHENG4.smcl
+  {txt}log type:  {res}smcl
+ {txt}opened on:  {res} 3 Feb 2022, 14:16:12
+{txt}
+{com}. *****************************************************************
+. * TABLE <tab:Turnout_main>
+. *****************************************************************
+. * program to add results to table
+. cap program drop addtotable
+{txt}
+{com}. program addtotable
+{txt}  1{com}.         matrix TABLE = (nullmat(TABLE), (_b[x_0] \ _se[x_0] \ e(r2) \ e(N_clust) \ e(N)))
+{txt}  2{com}. end
+{txt}
+{com}. 
+. use "../temp/voting_cnty_clean.dta", clear
+{txt}
+{com}. 
+. cap matrix drop TABLE
+{txt}
+{com}. 
+. define_event x, changein(numdailies) maxchange($maxchange) window(1)
+{txt}
+{com}. 
+. areg D.readshare_hhld x_0 $demolist $misdemolist if mainsample_circ, absorb(styr) cluster(cnty90)
+
+{txt}Linear regression, absorbing indicators{col 49}Number of obs{col 67}= {res}    11,281
+{txt}Absorbed variable: {bf:styr}{col 49}No. of categories{col 67}= {res}       625
+{txt}{col 49}F({res}  15{txt},{res}   1180{txt}){col 67}= {res}     64.68
+{txt}{col 49}Prob > F{col 67}= {res}    0.0000
+{txt}{col 49}R-squared{col 67}= {res}    0.4352
+{txt}{col 49}Adj R-squared{col 67}= {res}    0.4013
+{txt}{col 49}Root MSE{col 67}= {res}    0.0962
+
+{txt}{ralign 90:(Std. Err. adjusted for {res:1,181} clusters in cnty90)}
+{hline 25}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 26}{c |}{col 38}    Robust
+{col 1}        D.readshare_hhld{col 26}{c |}      Coef.{col 38}   Std. Err.{col 50}      t{col 58}   P>|t|{col 66}     [95% Con{col 79}f. Interval]
+{hline 25}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 21}x_0 {c |}{col 26}{res}{space 2} .1313783{col 38}{space 2} .0044306{col 49}{space 1}   29.65{col 58}{space 3}0.000{col 66}{space 4} .1226855{col 79}{space 3} .1400711
+{txt}{space 8}D_ishare_foreign {c |}{col 26}{res}{space 2}-.0326149{col 38}{space 2} .1271438{col 49}{space 1}   -0.26{col 58}{space 3}0.798{col 66}{space 4} -.282068{col 79}{space 3} .2168383
+{txt}{space 10}D_ishare_manuf {c |}{col 26}{res}{space 2} .0689277{col 38}{space 2} .0381289{col 49}{space 1}    1.81{col 58}{space 3}0.071{col 66}{space 4}-.0058804{col 79}{space 3} .1437357
+{txt}{space 11}D_ishare_male {c |}{col 26}{res}{space 2}-.4580484{col 38}{space 2} .1132962{col 49}{space 1}   -4.04{col 58}{space 3}0.000{col 66}{space 4} -.680333{col 79}{space 3}-.2357639
+{txt}{space 12}D_ishare_urb {c |}{col 26}{res}{space 2} .0190174{col 38}{space 2} .0319697{col 49}{space 1}    0.59{col 58}{space 3}0.552{col 66}{space 4}-.0437063{col 79}{space 3} .0817412
+{txt}{space 11}D_ishare_town {c |}{col 26}{res}{space 2} .0720808{col 38}{space 2} .0290727{col 49}{space 1}    2.48{col 58}{space 3}0.013{col 66}{space 4} .0150408{col 79}{space 3} .1291207
+{txt}{space 10}D_ishare_white {c |}{col 26}{res}{space 2}-.0147439{col 38}{space 2} .0777068{col 49}{space 1}   -0.19{col 58}{space 3}0.850{col 66}{space 4}-.1672029{col 79}{space 3}  .137715
+{txt}{space 4}D_ilog_manufout_ctrl {c |}{col 26}{res}{space 2}-.0002912{col 38}{space 2}  .002557{col 49}{space 1}   -0.11{col 58}{space 3}0.909{col 66}{space 4} -.005308{col 79}{space 3} .0047256
+{txt}{space 4}mis_D_ishare_foreign {c |}{col 26}{res}{space 2}-.0233873{col 38}{space 2} .1283115{col 49}{space 1}   -0.18{col 58}{space 3}0.855{col 66}{space 4}-.2751315{col 79}{space 3} .2283568
+{txt}{space 6}mis_D_ishare_manuf {c |}{col 26}{res}{space 2}  .065495{col 38}{space 2} .0389366{col 49}{space 1}    1.68{col 58}{space 3}0.093{col 66}{space 4}-.0108977{col 79}{space 3} .1418877
+{txt}{space 7}mis_D_ishare_male {c |}{col 26}{res}{space 2}-.4584881{col 38}{space 2} .1128049{col 49}{space 1}   -4.06{col 58}{space 3}0.000{col 66}{space 4}-.6798087{col 79}{space 3}-.2371675
+{txt}{space 8}mis_D_ishare_urb {c |}{col 26}{res}{space 2}  .010508{col 38}{space 2} .0328244{col 49}{space 1}    0.32{col 58}{space 3}0.749{col 66}{space 4}-.0538927{col 79}{space 3} .0749087
+{txt}{space 7}mis_D_ishare_town {c |}{col 26}{res}{space 2} .0757536{col 38}{space 2} .0369595{col 49}{space 1}    2.05{col 58}{space 3}0.041{col 66}{space 4}   .00324{col 79}{space 3} .1482672
+{txt}{space 6}mis_D_ishare_white {c |}{col 26}{res}{space 2}-.0137255{col 38}{space 2} .0776824{col 49}{space 1}   -0.18{col 58}{space 3}0.860{col 66}{space 4}-.1661365{col 79}{space 3} .1386856
+{txt}mis_D_ilog_manufout_ctrl {c |}{col 26}{res}{space 2}-.0040974{col 38}{space 2} .0043077{col 49}{space 1}   -0.95{col 58}{space 3}0.342{col 66}{space 4}-.0125489{col 79}{space 3} .0043541
+{txt}{space 19}_cons {c |}{col 26}{res}{space 2} .0110792{col 38}{space 2} .0037819{col 49}{space 1}    2.93{col 58}{space 3}0.003{col 66}{space 4} .0036592{col 79}{space 3} .0184991
+{txt}{hline 25}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+
+{com}.         addtotable
+{txt}
+{com}. 
+. areg D.prestout x_0 if mainsample, absorb(styr) cluster(cnty90)
+
+{txt}Linear regression, absorbing indicators{col 49}Number of obs{col 67}= {res}    15,627
+{txt}Absorbed variable: {bf:styr}{col 49}No. of categories{col 67}= {res}       634
+{txt}{col 49}F({res}   1{txt},{res}   1194{txt}){col 67}= {res}      7.68
+{txt}{col 49}Prob > F{col 67}= {res}    0.0057
+{txt}{col 49}R-squared{col 67}= {res}    0.5690
+{txt}{col 49}Adj R-squared{col 67}= {res}    0.5507
+{txt}{col 49}Root MSE{col 67}= {res}    0.0816
+
+{txt}{ralign 78:(Std. Err. adjusted for {res:1,195} clusters in cnty90)}
+{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 14}{c |}{col 26}    Robust
+{col 1}  D.prestout{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 9}x_0 {c |}{col 14}{res}{space 2} .0025907{col 26}{space 2} .0009351{col 37}{space 1}    2.77{col 46}{space 3}0.006{col 54}{space 4} .0007561{col 67}{space 3} .0044252
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2}-.0072455{col 26}{space 2} .0003658{col 37}{space 1}  -19.81{col 46}{space 3}0.000{col 54}{space 4}-.0079632{col 67}{space 3}-.0065278
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+
+{com}.         addtotable
+{txt}
+{com}. areg D.prestout x_0 $demolist $misdemolist if mainsample, absorb(styr) cluster(cnty90)
+
+{txt}Linear regression, absorbing indicators{col 49}Number of obs{col 67}= {res}    15,627
+{txt}Absorbed variable: {bf:styr}{col 49}No. of categories{col 67}= {res}       634
+{txt}{col 49}F({res}  15{txt},{res}   1194{txt}){col 67}= {res}     18.08
+{txt}{col 49}Prob > F{col 67}= {res}    0.0000
+{txt}{col 49}R-squared{col 67}= {res}    0.5785
+{txt}{col 49}Adj R-squared{col 67}= {res}    0.5603
+{txt}{col 49}Root MSE{col 67}= {res}    0.0807
+
+{txt}{ralign 90:(Std. Err. adjusted for {res:1,195} clusters in cnty90)}
+{hline 25}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 26}{c |}{col 38}    Robust
+{col 1}              D.prestout{col 26}{c |}      Coef.{col 38}   Std. Err.{col 50}      t{col 58}   P>|t|{col 66}     [95% Con{col 79}f. Interval]
+{hline 25}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 21}x_0 {c |}{col 26}{res}{space 2} .0033903{col 38}{space 2}  .000947{col 49}{space 1}    3.58{col 58}{space 3}0.000{col 66}{space 4} .0015323{col 79}{space 3} .0052482
+{txt}{space 8}D_ishare_foreign {c |}{col 26}{res}{space 2}-.4445569{col 38}{space 2} .1236574{col 49}{space 1}   -3.60{col 58}{space 3}0.000{col 66}{space 4}-.6871668{col 79}{space 3} -.201947
+{txt}{space 10}D_ishare_manuf {c |}{col 26}{res}{space 2} .0255105{col 38}{space 2} .0253431{col 49}{space 1}    1.01{col 58}{space 3}0.314{col 66}{space 4}-.0242114{col 79}{space 3} .0752324
+{txt}{space 11}D_ishare_male {c |}{col 26}{res}{space 2}-1.038035{col 38}{space 2} .1345418{col 49}{space 1}   -7.72{col 58}{space 3}0.000{col 66}{space 4}   -1.302{col 79}{space 3}-.7740705
+{txt}{space 12}D_ishare_urb {c |}{col 26}{res}{space 2}-.0065935{col 38}{space 2} .0159349{col 49}{space 1}   -0.41{col 58}{space 3}0.679{col 66}{space 4} -.037857{col 79}{space 3} .0246699
+{txt}{space 11}D_ishare_town {c |}{col 26}{res}{space 2} -.120338{col 38}{space 2} .0263148{col 49}{space 1}   -4.57{col 58}{space 3}0.000{col 66}{space 4}-.1719663{col 79}{space 3}-.0687096
+{txt}{space 10}D_ishare_white {c |}{col 26}{res}{space 2} .3073438{col 38}{space 2}  .077407{col 49}{space 1}    3.97{col 58}{space 3}0.000{col 66}{space 4}  .155475{col 79}{space 3} .4592126
+{txt}{space 4}D_ilog_manufout_ctrl {c |}{col 26}{res}{space 2}-.0019753{col 38}{space 2} .0026129{col 49}{space 1}   -0.76{col 58}{space 3}0.450{col 66}{space 4}-.0071018{col 79}{space 3} .0031511
+{txt}{space 4}mis_D_ishare_foreign {c |}{col 26}{res}{space 2}-.4239729{col 38}{space 2}  .123727{col 49}{space 1}   -3.43{col 58}{space 3}0.001{col 66}{space 4}-.6667193{col 79}{space 3}-.1812264
+{txt}{space 6}mis_D_ishare_manuf {c |}{col 26}{res}{space 2} .0252067{col 38}{space 2} .0253594{col 49}{space 1}    0.99{col 58}{space 3}0.320{col 66}{space 4}-.0245472{col 79}{space 3} .0749607
+{txt}{space 7}mis_D_ishare_male {c |}{col 26}{res}{space 2}-1.023687{col 38}{space 2}  .134518{col 49}{space 1}   -7.61{col 58}{space 3}0.000{col 66}{space 4}-1.287605{col 79}{space 3}-.7597687
+{txt}{space 8}mis_D_ishare_urb {c |}{col 26}{res}{space 2} .0009146{col 38}{space 2}  .015878{col 49}{space 1}    0.06{col 58}{space 3}0.954{col 66}{space 4}-.0302373{col 79}{space 3} .0320664
+{txt}{space 7}mis_D_ishare_town {c |}{col 26}{res}{space 2}-.1035716{col 38}{space 2} .0302136{col 49}{space 1}   -3.43{col 58}{space 3}0.001{col 66}{space 4}-.1628492{col 79}{space 3}-.0442941
+{txt}{space 6}mis_D_ishare_white {c |}{col 26}{res}{space 2} .2969916{col 38}{space 2} .0776548{col 49}{space 1}    3.82{col 58}{space 3}0.000{col 66}{space 4} .1446365{col 79}{space 3} .4493466
+{txt}mis_D_ilog_manufout_ctrl {c |}{col 26}{res}{space 2} .0053618{col 38}{space 2} .0041127{col 49}{space 1}    1.30{col 58}{space 3}0.193{col 66}{space 4} -.002707{col 79}{space 3} .0134307
+{txt}{space 19}_cons {c |}{col 26}{res}{space 2}-.0138803{col 38}{space 2}  .002682{col 49}{space 1}   -5.18{col 58}{space 3}0.000{col 66}{space 4}-.0191423{col 79}{space 3}-.0086183
+{txt}{hline 25}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+
+{com}.         addtotable
+{txt}
+{com}. 
+. areg D.congtout x_0 $demolist $misdemolist if mainsample&abs(D.congtout)<1, absorb(styr) cluster(cnty90)
+
+{txt}Linear regression, absorbing indicators{col 49}Number of obs{col 67}= {res}    14,634
+{txt}Absorbed variable: {bf:styr}{col 49}No. of categories{col 67}= {res}       582
+{txt}{col 49}F({res}  15{txt},{res}   1194{txt}){col 67}= {res}     15.47
+{txt}{col 49}Prob > F{col 67}= {res}    0.0000
+{txt}{col 49}R-squared{col 67}= {res}    0.5211
+{txt}{col 49}Adj R-squared{col 67}= {res}    0.5008
+{txt}{col 49}Root MSE{col 67}= {res}    0.0914
+
+{txt}{ralign 90:(Std. Err. adjusted for {res:1,195} clusters in cnty90)}
+{hline 25}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 26}{c |}{col 38}    Robust
+{col 1}              D.congtout{col 26}{c |}      Coef.{col 38}   Std. Err.{col 50}      t{col 58}   P>|t|{col 66}     [95% Con{col 79}f. Interval]
+{hline 25}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 21}x_0 {c |}{col 26}{res}{space 2} .0031395{col 38}{space 2} .0011219{col 49}{space 1}    2.80{col 58}{space 3}0.005{col 66}{space 4} .0009383{col 79}{space 3} .0053407
+{txt}{space 8}D_ishare_foreign {c |}{col 26}{res}{space 2}-.4400792{col 38}{space 2} .1083999{col 49}{space 1}   -4.06{col 58}{space 3}0.000{col 66}{space 4}-.6527547{col 79}{space 3}-.2274036
+{txt}{space 10}D_ishare_manuf {c |}{col 26}{res}{space 2} .0243622{col 38}{space 2} .0283649{col 49}{space 1}    0.86{col 58}{space 3}0.391{col 66}{space 4}-.0312883{col 79}{space 3} .0800127
+{txt}{space 11}D_ishare_male {c |}{col 26}{res}{space 2}-1.027727{col 38}{space 2} .1254177{col 49}{space 1}   -8.19{col 58}{space 3}0.000{col 66}{space 4}-1.273791{col 79}{space 3}-.7816638
+{txt}{space 12}D_ishare_urb {c |}{col 26}{res}{space 2}-.0150859{col 38}{space 2} .0176739{col 49}{space 1}   -0.85{col 58}{space 3}0.394{col 66}{space 4}-.0497613{col 79}{space 3} .0195894
+{txt}{space 11}D_ishare_town {c |}{col 26}{res}{space 2}-.1187625{col 38}{space 2} .0281878{col 49}{space 1}   -4.21{col 58}{space 3}0.000{col 66}{space 4}-.1740656{col 79}{space 3}-.0634594
+{txt}{space 10}D_ishare_white {c |}{col 26}{res}{space 2} .2472513{col 38}{space 2} .0852038{col 49}{space 1}    2.90{col 58}{space 3}0.004{col 66}{space 4} .0800855{col 79}{space 3} .4144172
+{txt}{space 4}D_ilog_manufout_ctrl {c |}{col 26}{res}{space 2}-.0021124{col 38}{space 2} .0026179{col 49}{space 1}   -0.81{col 58}{space 3}0.420{col 66}{space 4}-.0072485{col 79}{space 3} .0030238
+{txt}{space 4}mis_D_ishare_foreign {c |}{col 26}{res}{space 2}-.4238163{col 38}{space 2}  .108023{col 49}{space 1}   -3.92{col 58}{space 3}0.000{col 66}{space 4}-.6357522{col 79}{space 3}-.2118803
+{txt}{space 6}mis_D_ishare_manuf {c |}{col 26}{res}{space 2} .0241851{col 38}{space 2} .0284051{col 49}{space 1}    0.85{col 58}{space 3}0.395{col 66}{space 4}-.0315445{col 79}{space 3} .0799146
+{txt}{space 7}mis_D_ishare_male {c |}{col 26}{res}{space 2} -1.01908{col 38}{space 2} .1251754{col 49}{space 1}   -8.14{col 58}{space 3}0.000{col 66}{space 4}-1.264668{col 79}{space 3}-.7734917
+{txt}{space 8}mis_D_ishare_urb {c |}{col 26}{res}{space 2}-.0102323{col 38}{space 2} .0179525{col 49}{space 1}   -0.57{col 58}{space 3}0.569{col 66}{space 4}-.0454542{col 79}{space 3} .0249896
+{txt}{space 7}mis_D_ishare_town {c |}{col 26}{res}{space 2}-.1016049{col 38}{space 2} .0324199{col 49}{space 1}   -3.13{col 58}{space 3}0.002{col 66}{space 4}-.1652111{col 79}{space 3}-.0379986
+{txt}{space 6}mis_D_ishare_white {c |}{col 26}{res}{space 2} .2246265{col 38}{space 2} .0852682{col 49}{space 1}    2.63{col 58}{space 3}0.009{col 66}{space 4} .0573343{col 79}{space 3} .3919187
+{txt}mis_D_ilog_manufout_ctrl {c |}{col 26}{res}{space 2} .0050659{col 38}{space 2} .0040936{col 49}{space 1}    1.24{col 58}{space 3}0.216{col 66}{space 4}-.0029656{col 79}{space 3} .0130973
+{txt}{space 19}_cons {c |}{col 26}{res}{space 2} -.013822{col 38}{space 2} .0027469{col 49}{space 1}   -5.03{col 58}{space 3}0.000{col 66}{space 4}-.0192113{col 79}{space 3}-.0084327
+{txt}{hline 25}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+
+{com}.         addtotable
+{txt}
+{com}. 
+. areg D_congtout_long x_0 $demolist $misdemolist if mainsample&abs(D_congtout_long)<1, absorb(styr) cluster(cnty90)
+
+{txt}Linear regression, absorbing indicators{col 49}Number of obs{col 67}= {res}    13,869
+{txt}Absorbed variable: {bf:styr}{col 49}No. of categories{col 67}= {res}       555
+{txt}{col 49}F({res}  15{txt},{res}   1191{txt}){col 67}= {res}     16.59
+{txt}{col 49}Prob > F{col 67}= {res}    0.0000
+{txt}{col 49}R-squared{col 67}= {res}    0.5310
+{txt}{col 49}Adj R-squared{col 67}= {res}    0.5109
+{txt}{col 49}Root MSE{col 67}= {res}    0.1023
+
+{txt}{ralign 90:(Std. Err. adjusted for {res:1,192} clusters in cnty90)}
+{hline 25}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 26}{c |}{col 38}    Robust
+{col 1}         D_congtout_long{col 26}{c |}      Coef.{col 38}   Std. Err.{col 50}      t{col 58}   P>|t|{col 66}     [95% Con{col 79}f. Interval]
+{hline 25}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 21}x_0 {c |}{col 26}{res}{space 2} .0032094{col 38}{space 2} .0011689{col 49}{space 1}    2.75{col 58}{space 3}0.006{col 66}{space 4}  .000916{col 79}{space 3} .0055027
+{txt}{space 8}D_ishare_foreign {c |}{col 26}{res}{space 2}-.5797536{col 38}{space 2} .1794421{col 49}{space 1}   -3.23{col 58}{space 3}0.001{col 66}{space 4}-.9318114{col 79}{space 3}-.2276958
+{txt}{space 10}D_ishare_manuf {c |}{col 26}{res}{space 2} .0066757{col 38}{space 2} .0418679{col 49}{space 1}    0.16{col 58}{space 3}0.873{col 66}{space 4}-.0754674{col 79}{space 3} .0888187
+{txt}{space 11}D_ishare_male {c |}{col 26}{res}{space 2}-1.863445{col 38}{space 2} .1714673{col 49}{space 1}  -10.87{col 58}{space 3}0.000{col 66}{space 4}-2.199857{col 79}{space 3}-1.527034
+{txt}{space 12}D_ishare_urb {c |}{col 26}{res}{space 2}-.0605055{col 38}{space 2} .0211279{col 49}{space 1}   -2.86{col 58}{space 3}0.004{col 66}{space 4}-.1019576{col 79}{space 3}-.0190535
+{txt}{space 11}D_ishare_town {c |}{col 26}{res}{space 2}-.1774425{col 38}{space 2}  .032446{col 49}{space 1}   -5.47{col 58}{space 3}0.000{col 66}{space 4}-.2411003{col 79}{space 3}-.1137848
+{txt}{space 10}D_ishare_white {c |}{col 26}{res}{space 2} .2395389{col 38}{space 2} .1327485{col 49}{space 1}    1.80{col 58}{space 3}0.071{col 66}{space 4}-.0209081{col 79}{space 3}  .499986
+{txt}{space 4}D_ilog_manufout_ctrl {c |}{col 26}{res}{space 2} .0015626{col 38}{space 2} .0036817{col 49}{space 1}    0.42{col 58}{space 3}0.671{col 66}{space 4}-.0056606{col 79}{space 3} .0087858
+{txt}{space 4}mis_D_ishare_foreign {c |}{col 26}{res}{space 2}-.5665304{col 38}{space 2} .1770014{col 49}{space 1}   -3.20{col 58}{space 3}0.001{col 66}{space 4}-.9137998{col 79}{space 3}-.2192611
+{txt}{space 6}mis_D_ishare_manuf {c |}{col 26}{res}{space 2} .0073526{col 38}{space 2}  .042481{col 49}{space 1}    0.17{col 58}{space 3}0.863{col 66}{space 4}-.0759933{col 79}{space 3} .0906984
+{txt}{space 7}mis_D_ishare_male {c |}{col 26}{res}{space 2}-1.856537{col 38}{space 2} .1713632{col 49}{space 1}  -10.83{col 58}{space 3}0.000{col 66}{space 4}-2.192744{col 79}{space 3} -1.52033
+{txt}{space 8}mis_D_ishare_urb {c |}{col 26}{res}{space 2}-.0578705{col 38}{space 2} .0212055{col 49}{space 1}   -2.73{col 58}{space 3}0.006{col 66}{space 4}-.0994748{col 79}{space 3}-.0162662
+{txt}{space 7}mis_D_ishare_town {c |}{col 26}{res}{space 2} -.189339{col 38}{space 2} .0348415{col 49}{space 1}   -5.43{col 58}{space 3}0.000{col 66}{space 4}-.2576967{col 79}{space 3}-.1209814
+{txt}{space 6}mis_D_ishare_white {c |}{col 26}{res}{space 2} .2221395{col 38}{space 2} .1337924{col 49}{space 1}    1.66{col 58}{space 3}0.097{col 66}{space 4}-.0403556{col 79}{space 3} .4846345
+{txt}mis_D_ilog_manufout_ctrl {c |}{col 26}{res}{space 2}-.0060038{col 38}{space 2} .0060757{col 49}{space 1}   -0.99{col 58}{space 3}0.323{col 66}{space 4}-.0179241{col 79}{space 3} .0059165
+{txt}{space 19}_cons {c |}{col 26}{res}{space 2}-.0317513{col 38}{space 2} .0032215{col 49}{space 1}   -9.86{col 58}{space 3}0.000{col 66}{space 4}-.0380718{col 79}{space 3}-.0254307
+{txt}{hline 25}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+
+{com}.         addtotable
+{txt}
+{com}. 
+. matrix_to_txt, saving(..\output\tables.txt) mat(TABLE) format(%20.4f) title(<tab:Turnout_main>) append
+{txt}(note: file ..\output\tables.txt not found)
+
+{com}. 
+. 
+. 
+. *****************************************************************
+. * TABLE <tab:Turnout_main_replication>
+. *****************************************************************
+. 
+. use "http://fmwww.bc.edu/repec/bocode/t/turnout_dailies_1868-1928.dta", clear
+{txt}
+{com}. 
+. * program to add results to table
+. cap program drop addtotable_LATE
+{txt}
+{com}. program addtotable_LATE
+{txt}  1{com}.         matrix TABLE = (nullmat(TABLE), ( e(b_LATE) \ e(se_LATE) \ e(N)))
+{txt}  2{com}. end
+{txt}
+{com}. 
+. cap matrix drop TABLE
+{txt}
+{com}. 
+. sum pres_turnout numdailies // check that we have the same output as on the paper
+
+{txt}    Variable {c |}        Obs        Mean    Std. Dev.       Min        Max
+{hline 13}{c +}{hline 57}
+pres_turnout {c |}{res}     16,872      .65014    .2210102   .0017981      2.518
+{txt}{space 2}numdailies {c |}{res}     16,872    1.463134    2.210448          0         45
+{txt}
+{com}. 
+. * 1868 and 1872 elections
+. gen G1872=(fd_numdailies>0) if (year==1872) & fd_numdailies!=. & fd_numdailies>= 0 & sample==1
+{txt}(16,160 missing values generated)
+
+{com}. sort cnty90 year
+{txt}
+{com}. replace G1872=G1872[_n+1] if cnty90==cnty90[_n+1] & year==1868
+{txt}(712 real changes made)
+
+{com}. 
+. ***DID TC CIC without controls
+. fuzzydid pres_turnout G1872 year numdailies, did tc cic newcateg(0 1 2 45) breps(200) cluster(cnty90)
+{txt}(running {bf:estim_wrapper} on estimation sample)
+
+Bootstrap replications ({res}200{txt})
+{hline 4}{c +}{hline 3} 1 {hline 3}{c +}{hline 3} 2 {hline 3}{c +}{hline 3} 3 {hline 3}{c +}{hline 3} 4 {hline 3}{c +}{hline 3} 5 
+..................................................    50
+..................................................   100
+..................................................   150
+..................................................   200
+{res}
+{txt}{p 0 0 2}Estimator(s) of the local average treatment effect with bootstrapped  standard errors.  Cluster variable: cnty90.  Number of observations:  1424 .{p_end}
+
+{space 0}{space 0}{ralign 12:}{space 1}{c |}{space 1}{ralign 9:LATE}{space 1}{space 1}{ralign 9:Std_Err}{space 1}{space 1}{ralign 9:t}{space 1}{space 1}{ralign 9:p_value}{space 1}{space 1}{ralign 9:lower_ic}{space 1}{space 1}{ralign 9:upper_ic}{space 1}
+{space 0}{hline 13}{c   +}{hline 11}{hline 11}{hline 11}{hline 11}{hline 11}{hline 11}
+{space 0}{space 0}{ralign 12:W_DID}{space 1}{c |}{space 1}{ralign 9:{res:{sf: .0047699}}}{space 1}{space 1}{ralign 9:{res:{sf: .0156527}}}{space 1}{space 1}{ralign 9:{res:{sf: .3047304}}}{space 1}{space 1}{ralign 9:{res:{sf: .7605715}}}{space 1}{space 1}{ralign 9:{res:{sf:-.0243498}}}{space 1}{space 1}{ralign 9:{res:{sf: .0370637}}}{space 1}
+{space 0}{space 0}{ralign 12:W_TC}{space 1}{c |}{space 1}{ralign 9:{res:{sf: .0266618}}}{space 1}{space 1}{ralign 9:{res:{sf: .0153468}}}{space 1}{space 1}{ralign 9:{res:{sf: 1.737291}}}{space 1}{space 1}{ralign 9:{res:{sf: .0823359}}}{space 1}{space 1}{ralign 9:{res:{sf:-.0023919}}}{space 1}{space 1}{ralign 9:{res:{sf: .0537235}}}{space 1}
+{space 0}{space 0}{ralign 12:W_CIC}{space 1}{c |}{space 1}{ralign 9:{res:{sf: .0133223}}}{space 1}{space 1}{ralign 9:{res:{sf: .0128159}}}{space 1}{space 1}{ralign 9:{res:{sf: 1.039512}}}{space 1}{space 1}{ralign 9:{res:{sf: .2985666}}}{space 1}{space 1}{ralign 9:{res:{sf:-.0180014}}}{space 1}{space 1}{ralign 9:{res:{sf: .0348044}}}{space 1}
+
+{com}. ***LQTE
+. gen numdailies_bin = (numdailies >= 1)
+{txt}
+{com}. fuzzydid pres_turnout G1872 year numdailies_bin, lqte breps(200) cluster(cnty90)
+{txt}(running {bf:estim_wrapper} on estimation sample)
+
+Bootstrap replications ({res}200{txt})
+{hline 4}{c +}{hline 3} 1 {hline 3}{c +}{hline 3} 2 {hline 3}{c +}{hline 3} 3 {hline 3}{c +}{hline 3} 4 {hline 3}{c +}{hline 3} 5 
+..................................................    50
+..................................................   100
+..................................................   150
+..................................................   200
+{res}
+{txt}{p 0 0 2}Estimators of local quantile treatment  effects with bootstrapped standard errors.  Cluster variable: cnty90.  Number of observations:  1424 .{p_end}
+
+{space 0}{space 0}{ralign 12:}{space 1}{c |}{space 1}{ralign 9:LQTE}{space 1}{space 1}{ralign 9:Std_Err}{space 1}{space 1}{ralign 9:t}{space 1}{space 1}{ralign 9:p_value}{space 1}{space 1}{ralign 9:lower_ic}{space 1}{space 1}{ralign 9:upper_ic}{space 1}
+{space 0}{hline 13}{c   +}{hline 11}{hline 11}{hline 11}{hline 11}{hline 11}{hline 11}
+{space 0}{space 0}{ralign 12:q_5}{space 1}{c |}{space 1}{ralign 9:{res:{sf:     .154}}}{space 1}{space 1}{ralign 9:{res:{sf: .1513485}}}{space 1}{space 1}{ralign 9:{res:{sf: 1.017519}}}{space 1}{space 1}{ralign 9:{res:{sf: .3089065}}}{space 1}{space 1}{ralign 9:{res:{sf:   -.0265}}}{space 1}{space 1}{ralign 9:{res:{sf:   .49577}}}{space 1}
+{space 0}{space 0}{ralign 12:q_10}{space 1}{c |}{space 1}{ralign 9:{res:{sf:     .072}}}{space 1}{space 1}{ralign 9:{res:{sf: .0909388}}}{space 1}{space 1}{ralign 9:{res:{sf: .7917416}}}{space 1}{space 1}{ralign 9:{res:{sf: .4285113}}}{space 1}{space 1}{ralign 9:{res:{sf:   -.0825}}}{space 1}{space 1}{ralign 9:{res:{sf:    .2955}}}{space 1}
+{space 0}{space 0}{ralign 12:q_15}{space 1}{c |}{space 1}{ralign 9:{res:{sf:    -.007}}}{space 1}{space 1}{ralign 9:{res:{sf: .0723995}}}{space 1}{space 1}{ralign 9:{res:{sf:-.0966854}}}{space 1}{space 1}{ralign 9:{res:{sf: .9229763}}}{space 1}{space 1}{ralign 9:{res:{sf:    -.085}}}{space 1}{space 1}{ralign 9:{res:{sf:      .19}}}{space 1}
+{space 0}{space 0}{ralign 12:q_20}{space 1}{c |}{space 1}{ralign 9:{res:{sf:     .005}}}{space 1}{space 1}{ralign 9:{res:{sf: .0600841}}}{space 1}{space 1}{ralign 9:{res:{sf: .0832166}}}{space 1}{space 1}{ralign 9:{res:{sf: .9336793}}}{space 1}{space 1}{ralign 9:{res:{sf:   -.0955}}}{space 1}{space 1}{ralign 9:{res:{sf:    .1315}}}{space 1}
+{space 0}{space 0}{ralign 12:q_25}{space 1}{c |}{space 1}{ralign 9:{res:{sf:-.0040001}}}{space 1}{space 1}{ralign 9:{res:{sf: .0581036}}}{space 1}{space 1}{ralign 9:{res:{sf:-.0688437}}}{space 1}{space 1}{ralign 9:{res:{sf:  .945114}}}{space 1}{space 1}{ralign 9:{res:{sf:    -.115}}}{space 1}{space 1}{ralign 9:{res:{sf:     .118}}}{space 1}
+{space 0}{space 0}{ralign 12:q_30}{space 1}{c |}{space 1}{ralign 9:{res:{sf:    -.034}}}{space 1}{space 1}{ralign 9:{res:{sf:  .054534}}}{space 1}{space 1}{ralign 9:{res:{sf:-.6234655}}}{space 1}{space 1}{ralign 9:{res:{sf: .5329787}}}{space 1}{space 1}{ralign 9:{res:{sf:    -.122}}}{space 1}{space 1}{ralign 9:{res:{sf:     .096}}}{space 1}
+{space 0}{space 0}{ralign 12:q_35}{space 1}{c |}{space 1}{ralign 9:{res:{sf:-.0270001}}}{space 1}{space 1}{ralign 9:{res:{sf: .0534221}}}{space 1}{space 1}{ralign 9:{res:{sf:-.5054098}}}{space 1}{space 1}{ralign 9:{res:{sf:  .613271}}}{space 1}{space 1}{ralign 9:{res:{sf:    -.125}}}{space 1}{space 1}{ralign 9:{res:{sf:     .075}}}{space 1}
+{space 0}{space 0}{ralign 12:q_40}{space 1}{c |}{space 1}{ralign 9:{res:{sf:    -.052}}}{space 1}{space 1}{ralign 9:{res:{sf: .0465974}}}{space 1}{space 1}{ralign 9:{res:{sf:-1.115942}}}{space 1}{space 1}{ralign 9:{res:{sf: .2644468}}}{space 1}{space 1}{ralign 9:{res:{sf:    -.114}}}{space 1}{space 1}{ralign 9:{res:{sf:    .0685}}}{space 1}
+{space 0}{space 0}{ralign 12:q_45}{space 1}{c |}{space 1}{ralign 9:{res:{sf:-.0529999}}}{space 1}{space 1}{ralign 9:{res:{sf: .0431021}}}{space 1}{space 1}{ralign 9:{res:{sf:-1.229637}}}{space 1}{space 1}{ralign 9:{res:{sf:  .218833}}}{space 1}{space 1}{ralign 9:{res:{sf:   -.1065}}}{space 1}{space 1}{ralign 9:{res:{sf:      .08}}}{space 1}
+{space 0}{space 0}{ralign 12:q_50}{space 1}{c |}{space 1}{ralign 9:{res:{sf:-.0330001}}}{space 1}{space 1}{ralign 9:{res:{sf: .0434485}}}{space 1}{space 1}{ralign 9:{res:{sf:-.7595203}}}{space 1}{space 1}{ralign 9:{res:{sf: .4475414}}}{space 1}{space 1}{ralign 9:{res:{sf:   -.1005}}}{space 1}{space 1}{ralign 9:{res:{sf:    .0765}}}{space 1}
+{space 0}{space 0}{ralign 12:q_55}{space 1}{c |}{space 1}{ralign 9:{res:{sf:-.0270001}}}{space 1}{space 1}{ralign 9:{res:{sf: .0439634}}}{space 1}{space 1}{ralign 9:{res:{sf: -.614149}}}{space 1}{space 1}{ralign 9:{res:{sf: .5391169}}}{space 1}{space 1}{ralign 9:{res:{sf:     -.09}}}{space 1}{space 1}{ralign 9:{res:{sf:     .078}}}{space 1}
+{space 0}{space 0}{ralign 12:q_60}{space 1}{c |}{space 1}{ralign 9:{res:{sf:     .011}}}{space 1}{space 1}{ralign 9:{res:{sf: .0454861}}}{space 1}{space 1}{ralign 9:{res:{sf: .2418318}}}{space 1}{space 1}{ralign 9:{res:{sf: .8089105}}}{space 1}{space 1}{ralign 9:{res:{sf:   -.0895}}}{space 1}{space 1}{ralign 9:{res:{sf:    .0805}}}{space 1}
+{space 0}{space 0}{ralign 12:q_65}{space 1}{c |}{space 1}{ralign 9:{res:{sf:      .02}}}{space 1}{space 1}{ralign 9:{res:{sf: .0453423}}}{space 1}{space 1}{ralign 9:{res:{sf: .4410902}}}{space 1}{space 1}{ralign 9:{res:{sf: .6591477}}}{space 1}{space 1}{ralign 9:{res:{sf:    -.086}}}{space 1}{space 1}{ralign 9:{res:{sf:    .0815}}}{space 1}
+{space 0}{space 0}{ralign 12:q_70}{space 1}{c |}{space 1}{ralign 9:{res:{sf: .0249999}}}{space 1}{space 1}{ralign 9:{res:{sf: .0433312}}}{space 1}{space 1}{ralign 9:{res:{sf: .5769501}}}{space 1}{space 1}{ralign 9:{res:{sf: .5639731}}}{space 1}{space 1}{ralign 9:{res:{sf:    -.079}}}{space 1}{space 1}{ralign 9:{res:{sf:    .0815}}}{space 1}
+{space 0}{space 0}{ralign 12:q_75}{space 1}{c |}{space 1}{ralign 9:{res:{sf:     .024}}}{space 1}{space 1}{ralign 9:{res:{sf: .0387178}}}{space 1}{space 1}{ralign 9:{res:{sf:  .619869}}}{space 1}{space 1}{ralign 9:{res:{sf:  .535344}}}{space 1}{space 1}{ralign 9:{res:{sf:    -.066}}}{space 1}{space 1}{ralign 9:{res:{sf:     .077}}}{space 1}
+{space 0}{space 0}{ralign 12:q_80}{space 1}{c |}{space 1}{ralign 9:{res:{sf:      .02}}}{space 1}{space 1}{ralign 9:{res:{sf: .0343319}}}{space 1}{space 1}{ralign 9:{res:{sf:  .582548}}}{space 1}{space 1}{ralign 9:{res:{sf: .5601976}}}{space 1}{space 1}{ralign 9:{res:{sf:-.0674999}}}{space 1}{space 1}{ralign 9:{res:{sf:     .064}}}{space 1}
+{space 0}{space 0}{ralign 12:q_85}{space 1}{c |}{space 1}{ralign 9:{res:{sf: .0210001}}}{space 1}{space 1}{ralign 9:{res:{sf: .0286363}}}{space 1}{space 1}{ralign 9:{res:{sf: .7333407}}}{space 1}{space 1}{ralign 9:{res:{sf: .4633507}}}{space 1}{space 1}{ralign 9:{res:{sf:    -.047}}}{space 1}{space 1}{ralign 9:{res:{sf:    .0675}}}{space 1}
+{space 0}{space 0}{ralign 12:q_90}{space 1}{c |}{space 1}{ralign 9:{res:{sf:     .037}}}{space 1}{space 1}{ralign 9:{res:{sf: .0265634}}}{space 1}{space 1}{ralign 9:{res:{sf: 1.392895}}}{space 1}{space 1}{ralign 9:{res:{sf: .1636516}}}{space 1}{space 1}{ralign 9:{res:{sf:    -.038}}}{space 1}{space 1}{ralign 9:{res:{sf:     .071}}}{space 1}
+{space 0}{space 0}{ralign 12:q_95}{space 1}{c |}{space 1}{ralign 9:{res:{sf:     .025}}}{space 1}{space 1}{ralign 9:{res:{sf: .0262281}}}{space 1}{space 1}{ralign 9:{res:{sf: .9531745}}}{space 1}{space 1}{ralign 9:{res:{sf: .3405017}}}{space 1}{space 1}{ralign 9:{res:{sf:-.0239999}}}{space 1}{space 1}{ralign 9:{res:{sf: .0704999}}}{space 1}
+
+{com}. 
+. *****************************************************************
+. * TABLE <tab:Turnout_main_replication_DID_1868+1872>
+. *****************************************************************
+. 
+. fuzzydid readshare_hhld G1872 year numdailies, did newcateg(0 1 2 45) continuous($demolist) qualitative(st1-st48  $misdemolist ) breps(200) cluster(cnty90)
+{txt}(running {bf:estim_wrapper} on estimation sample)
+
+Bootstrap replications ({res}200{txt})
+{hline 4}{c +}{hline 3} 1 {hline 3}{c +}{hline 3} 2 {hline 3}{c +}{hline 3} 3 {hline 3}{c +}{hline 3} 4 {hline 3}{c +}{hline 3} 5 
+..................................................    50
+..................................................   100
+..................................................   150
+..................................................   200
+{res}
+No method was specified to estimate E(Y|X), E(D|X) and P(D=d|X). Method set to default: ols.
+
+
+{txt}{p 0 0 2}Estimator(s) of the local average treatment effect with bootstrapped  standard errors.  Cluster variable: cnty90.  Number of observations:  1424 .  Controls included in the estimation:  D_ishare_foreign D_ishare_manuf D_ishare_male D_ishare_urb D_ishare_town D_ishare_white D_ilog_manufout_ctrl st1 st2 st3 st4 st5 st6 st7 st8 st9 st10 st11 st12 st13 st14 st15 st16 st17 st18 st19 st20 st21 st22 st23 st24 st25 st26 st27 st28 st29 st30 st31 st32 st33 st34 st35 st36 st37 st38 st39 st40 st41 st42 st43 st44 st45 st46 st47 st48 mis_D_ishare_foreign mis_D_ishare_manuf mis_D_ishare_male mis_D_ishare_urb mis_D_ishare_town mis_D_ishare_white mis_D_ilog_manufout_ctrl .{p_end}
+
+{space 0}{space 0}{ralign 12:}{space 1}{c |}{space 1}{ralign 9:LATE}{space 1}{space 1}{ralign 9:Std_Err}{space 1}{space 1}{ralign 9:t}{space 1}{space 1}{ralign 9:p_value}{space 1}{space 1}{ralign 9:lower_ic}{space 1}{space 1}{ralign 9:upper_ic}{space 1}
+{space 0}{hline 13}{c   +}{hline 11}{hline 11}{hline 11}{hline 11}{hline 11}{hline 11}
+{space 0}{space 0}{ralign 12:W_DID}{space 1}{c |}{space 1}{ralign 9:{res:{sf: .0482221}}}{space 1}{space 1}{ralign 9:{res:{sf: .0845416}}}{space 1}{space 1}{ralign 9:{res:{sf: .5703943}}}{space 1}{space 1}{ralign 9:{res:{sf: .5684103}}}{space 1}{space 1}{ralign 9:{res:{sf:-.1502646}}}{space 1}{space 1}{ralign 9:{res:{sf: .1529937}}}{space 1}
+
+{com}. addtotable_LATE
+{txt}
+{com}. fuzzydid pres_turnout G1872 year numdailies, did newcateg(0 1 2 45)  qualitative(st1-st48 ) breps(200) cluster(cnty90)
+{txt}(running {bf:estim_wrapper} on estimation sample)
+
+Bootstrap replications ({res}200{txt})
+{hline 4}{c +}{hline 3} 1 {hline 3}{c +}{hline 3} 2 {hline 3}{c +}{hline 3} 3 {hline 3}{c +}{hline 3} 4 {hline 3}{c +}{hline 3} 5 
+..................................................    50
+..................................................   100
+..................................................   150
+..................................................   200
+{res}
+No method was specified to estimate E(Y|X), E(D|X) and P(D=d|X). Method set to default: ols.
+
+
+{txt}{p 0 0 2}Estimator(s) of the local average treatment effect with bootstrapped  standard errors.  Cluster variable: cnty90.  Number of observations:  1424 .  Controls included in the estimation:  st1 st2 st3 st4 st5 st6 st7 st8 st9 st10 st11 st12 st13 st14 st15 st16 st17 st18 st19 st20 st21 st22 st23 st24 st25 st26 st27 st28 st29 st30 st31 st32 st33 st34 st35 st36 st37 st38 st39 st40 st41 st42 st43 st44 st45 st46 st47 st48 .{p_end}
+
+{space 0}{space 0}{ralign 12:}{space 1}{c |}{space 1}{ralign 9:LATE}{space 1}{space 1}{ralign 9:Std_Err}{space 1}{space 1}{ralign 9:t}{space 1}{space 1}{ralign 9:p_value}{space 1}{space 1}{ralign 9:lower_ic}{space 1}{space 1}{ralign 9:upper_ic}{space 1}
+{space 0}{hline 13}{c   +}{hline 11}{hline 11}{hline 11}{hline 11}{hline 11}{hline 11}
+{space 0}{space 0}{ralign 12:W_DID}{space 1}{c |}{space 1}{ralign 9:{res:{sf: .0257402}}}{space 1}{space 1}{ralign 9:{res:{sf: .0100182}}}{space 1}{space 1}{ralign 9:{res:{sf: 2.569337}}}{space 1}{space 1}{ralign 9:{res:{sf: .0101893}}}{space 1}{space 1}{ralign 9:{res:{sf: .0073509}}}{space 1}{space 1}{ralign 9:{res:{sf: .0465791}}}{space 1}
+
+{com}. addtotable_LATE
+{txt}
+{com}. fuzzydid pres_turnout G1872 year numdailies, did newcateg(0 1 2 45) continuous($demolist) qualitative(st1-st48  $misdemolist ) breps(200) cluster(cnty90)
+{txt}(running {bf:estim_wrapper} on estimation sample)
+
+Bootstrap replications ({res}200{txt})
+{hline 4}{c +}{hline 3} 1 {hline 3}{c +}{hline 3} 2 {hline 3}{c +}{hline 3} 3 {hline 3}{c +}{hline 3} 4 {hline 3}{c +}{hline 3} 5 
+..................................................    50
+..................................................   100
+..................................................   150
+..................................................   200
+{res}
+No method was specified to estimate E(Y|X), E(D|X) and P(D=d|X). Method set to default: ols.
+
+
+{txt}{p 0 0 2}Estimator(s) of the local average treatment effect with bootstrapped  standard errors.  Cluster variable: cnty90.  Number of observations:  1424 .  Controls included in the estimation:  D_ishare_foreign D_ishare_manuf D_ishare_male D_ishare_urb D_ishare_town D_ishare_white D_ilog_manufout_ctrl st1 st2 st3 st4 st5 st6 st7 st8 st9 st10 st11 st12 st13 st14 st15 st16 st17 st18 st19 st20 st21 st22 st23 st24 st25 st26 st27 st28 st29 st30 st31 st32 st33 st34 st35 st36 st37 st38 st39 st40 st41 st42 st43 st44 st45 st46 st47 st48 mis_D_ishare_foreign mis_D_ishare_manuf mis_D_ishare_male mis_D_ishare_urb mis_D_ishare_town mis_D_ishare_white mis_D_ilog_manufout_ctrl .{p_end}
+
+{space 0}{space 0}{ralign 12:}{space 1}{c |}{space 1}{ralign 9:LATE}{space 1}{space 1}{ralign 9:Std_Err}{space 1}{space 1}{ralign 9:t}{space 1}{space 1}{ralign 9:p_value}{space 1}{space 1}{ralign 9:lower_ic}{space 1}{space 1}{ralign 9:upper_ic}{space 1}
+{space 0}{hline 13}{c   +}{hline 11}{hline 11}{hline 11}{hline 11}{hline 11}{hline 11}
+{space 0}{space 0}{ralign 12:W_DID}{space 1}{c |}{space 1}{ralign 9:{res:{sf: .0446613}}}{space 1}{space 1}{ralign 9:{res:{sf: .0467424}}}{space 1}{space 1}{ralign 9:{res:{sf: .9554765}}}{space 1}{space 1}{ralign 9:{res:{sf: .3393368}}}{space 1}{space 1}{ralign 9:{res:{sf:-.0002438}}}{space 1}{space 1}{ralign 9:{res:{sf: .1189738}}}{space 1}
+
+{com}. addtotable_LATE
+{txt}
+{com}. fuzzydid congtout G1872 year numdailies, did newcateg(0 1 2 45) continuous($demolist) qualitative(st1-st48  $misdemolist ) breps(200) cluster(cnty90)
+{txt}(running {bf:estim_wrapper} on estimation sample)
+
+Bootstrap replications ({res}200{txt})
+{hline 4}{c +}{hline 3} 1 {hline 3}{c +}{hline 3} 2 {hline 3}{c +}{hline 3} 3 {hline 3}{c +}{hline 3} 4 {hline 3}{c +}{hline 3} 5 
+..................................................    50
+..................................................   100
+..................................................   150
+..................................................   200
+{res}
+No method was specified to estimate E(Y|X), E(D|X) and P(D=d|X). Method set to default: ols.
+
+
+{txt}{p 0 0 2}Estimator(s) of the local average treatment effect with bootstrapped  standard errors.  Cluster variable: cnty90.  Number of observations:  1363 .  Controls included in the estimation:  D_ishare_foreign D_ishare_manuf D_ishare_male D_ishare_urb D_ishare_town D_ishare_white D_ilog_manufout_ctrl st1 st2 st3 st4 st5 st6 st7 st8 st9 st10 st11 st12 st13 st14 st15 st16 st17 st18 st19 st20 st21 st22 st23 st24 st25 st26 st27 st28 st29 st30 st31 st32 st33 st34 st35 st36 st37 st38 st39 st40 st41 st42 st43 st44 st45 st46 st47 st48 mis_D_ishare_foreign mis_D_ishare_manuf mis_D_ishare_male mis_D_ishare_urb mis_D_ishare_town mis_D_ishare_white mis_D_ilog_manufout_ctrl .{p_end}
+
+{space 0}{space 0}{ralign 12:}{space 1}{c |}{space 1}{ralign 9:LATE}{space 1}{space 1}{ralign 9:Std_Err}{space 1}{space 1}{ralign 9:t}{space 1}{space 1}{ralign 9:p_value}{space 1}{space 1}{ralign 9:lower_ic}{space 1}{space 1}{ralign 9:upper_ic}{space 1}
+{space 0}{hline 13}{c   +}{hline 11}{hline 11}{hline 11}{hline 11}{hline 11}{hline 11}
+{space 0}{space 0}{ralign 12:W_DID}{space 1}{c |}{space 1}{ralign 9:{res:{sf: .0384757}}}{space 1}{space 1}{ralign 9:{res:{sf: .0337802}}}{space 1}{space 1}{ralign 9:{res:{sf: 1.139001}}}{space 1}{space 1}{ralign 9:{res:{sf: .2547028}}}{space 1}{space 1}{ralign 9:{res:{sf:-.0006497}}}{space 1}{space 1}{ralign 9:{res:{sf: .1269374}}}{space 1}
+
+{com}. addtotable_LATE
+{txt}
+{com}. fuzzydid D_congtout_long G1872 year numdailies, did newcateg(0 1 2 45) continuous($demolist) qualitative(st1-st48  $misdemolist ) breps(200) cluster(cnty90)
+{txt}(running {bf:estim_wrapper} on estimation sample)
+
+Bootstrap replications ({res}200{txt})
+{hline 4}{c +}{hline 3} 1 {hline 3}{c +}{hline 3} 2 {hline 3}{c +}{hline 3} 3 {hline 3}{c +}{hline 3} 4 {hline 3}{c +}{hline 3} 5 
+..................................................    50
+..................................................   100
+..................................................   150
+..................................................   200
+{res}
+No method was specified to estimate E(Y|X), E(D|X) and P(D=d|X). Method set to default: ols.
+
+
+{txt}{p 0 0 2}Estimator(s) of the local average treatment effect with bootstrapped  standard errors.  Cluster variable: cnty90.  Number of observations:  916 .  Controls included in the estimation:  D_ishare_foreign D_ishare_manuf D_ishare_male D_ishare_urb D_ishare_town D_ishare_white D_ilog_manufout_ctrl st1 st2 st3 st4 st5 st6 st7 st8 st9 st10 st11 st12 st13 st14 st15 st16 st17 st18 st19 st20 st21 st22 st23 st24 st25 st26 st27 st28 st29 st30 st31 st32 st33 st34 st35 st36 st37 st38 st39 st40 st41 st42 st43 st44 st45 st46 st47 st48 mis_D_ishare_foreign mis_D_ishare_manuf mis_D_ishare_male mis_D_ishare_urb mis_D_ishare_town mis_D_ishare_white mis_D_ilog_manufout_ctrl .{p_end}
+
+{space 0}{space 0}{ralign 12:}{space 1}{c |}{space 1}{ralign 9:LATE}{space 1}{space 1}{ralign 9:Std_Err}{space 1}{space 1}{ralign 9:t}{space 1}{space 1}{ralign 9:p_value}{space 1}{space 1}{ralign 9:lower_ic}{space 1}{space 1}{ralign 9:upper_ic}{space 1}
+{space 0}{hline 13}{c   +}{hline 11}{hline 11}{hline 11}{hline 11}{hline 11}{hline 11}
+{space 0}{space 0}{ralign 12:W_DID}{space 1}{c |}{space 1}{ralign 9:{res:{sf: .0058636}}}{space 1}{space 1}{ralign 9:{res:{sf: .0352054}}}{space 1}{space 1}{ralign 9:{res:{sf: .1665542}}}{space 1}{space 1}{ralign 9:{res:{sf: .8677208}}}{space 1}{space 1}{ralign 9:{res:{sf:-.0459082}}}{space 1}{space 1}{ralign 9:{res:{sf: .0919667}}}{space 1}
+
+{com}. addtotable_LATE
+{txt}
+{com}. 
+. matrix_to_txt, saving(..\output\tables_did6872.txt) mat(TABLE) format(%20.4f) title(<tab:Turnout_main_did6872>) append
+{txt}
+{com}. 
+. *****************************************************************
+. * TABLE <tab:Turnout_main_replication_TC_1868+1872>
+. *****************************************************************
+. 
+. cap matrix drop TABLE
+{txt}
+{com}. 
+. fuzzydid readshare_hhld G1872 year numdailies, tc newcateg(0 1 2 45) continuous($demolist) qualitative(st1-st48  $misdemolist ) breps(200) cluster(cnty90)
+{txt}(running {bf:estim_wrapper} on estimation sample)
+
+Bootstrap replications ({res}200{txt})
+{hline 4}{c +}{hline 3} 1 {hline 3}{c +}{hline 3} 2 {hline 3}{c +}{hline 3} 3 {hline 3}{c +}{hline 3} 4 {hline 3}{c +}{hline 3} 5 
+..................................................    50
+..................................................   100
+..................................................   150
+..................................................   200
+{res}
+No method was specified to estimate E(Y|X), E(D|X) and P(D=d|X). Method set to default: ols.
+
+
+{txt}{p 0 0 2}Estimator(s) of the local average treatment effect with bootstrapped  standard errors.  Cluster variable: cnty90.  Number of observations:  1424 .  Controls included in the estimation:  D_ishare_foreign D_ishare_manuf D_ishare_male D_ishare_urb D_ishare_town D_ishare_white D_ilog_manufout_ctrl st1 st2 st3 st4 st5 st6 st7 st8 st9 st10 st11 st12 st13 st14 st15 st16 st17 st18 st19 st20 st21 st22 st23 st24 st25 st26 st27 st28 st29 st30 st31 st32 st33 st34 st35 st36 st37 st38 st39 st40 st41 st42 st43 st44 st45 st46 st47 st48 mis_D_ishare_foreign mis_D_ishare_manuf mis_D_ishare_male mis_D_ishare_urb mis_D_ishare_town mis_D_ishare_white mis_D_ilog_manufout_ctrl .{p_end}
+
+{space 0}{space 0}{ralign 12:}{space 1}{c |}{space 1}{ralign 9:LATE}{space 1}{space 1}{ralign 9:Std_Err}{space 1}{space 1}{ralign 9:t}{space 1}{space 1}{ralign 9:p_value}{space 1}{space 1}{ralign 9:lower_ic}{space 1}{space 1}{ralign 9:upper_ic}{space 1}
+{space 0}{hline 13}{c   +}{hline 11}{hline 11}{hline 11}{hline 11}{hline 11}{hline 11}
+{space 0}{space 0}{ralign 12:W_TC}{space 1}{c |}{space 1}{ralign 9:{res:{sf: .0447894}}}{space 1}{space 1}{ralign 9:{res:{sf: 8.489568}}}{space 1}{space 1}{ralign 9:{res:{sf: .0052758}}}{space 1}{space 1}{ralign 9:{res:{sf: .9957905}}}{space 1}{space 1}{ralign 9:{res:{sf:-29.13192}}}{space 1}{space 1}{ralign 9:{res:{sf: 5.032042}}}{space 1}
+
+{com}. addtotable_LATE
+{txt}
+{com}. fuzzydid pres_turnout G1872 year numdailies, tc newcateg(0 1 2 45)  qualitative(st1-st48 ) breps(200) cluster(cnty90)
+{txt}(running {bf:estim_wrapper} on estimation sample)
+
+Bootstrap replications ({res}200{txt})
+{hline 4}{c +}{hline 3} 1 {hline 3}{c +}{hline 3} 2 {hline 3}{c +}{hline 3} 3 {hline 3}{c +}{hline 3} 4 {hline 3}{c +}{hline 3} 5 
+..................................................    50
+..................................................   100
+..................................................   150
+..................................................   200
+{res}
+No method was specified to estimate E(Y|X), E(D|X) and P(D=d|X). Method set to default: ols.
+
+
+{txt}{p 0 0 2}Estimator(s) of the local average treatment effect with bootstrapped  standard errors.  Cluster variable: cnty90.  Number of observations:  1424 .  Controls included in the estimation:  st1 st2 st3 st4 st5 st6 st7 st8 st9 st10 st11 st12 st13 st14 st15 st16 st17 st18 st19 st20 st21 st22 st23 st24 st25 st26 st27 st28 st29 st30 st31 st32 st33 st34 st35 st36 st37 st38 st39 st40 st41 st42 st43 st44 st45 st46 st47 st48 .{p_end}
+
+{space 0}{space 0}{ralign 12:}{space 1}{c |}{space 1}{ralign 9:LATE}{space 1}{space 1}{ralign 9:Std_Err}{space 1}{space 1}{ralign 9:t}{space 1}{space 1}{ralign 9:p_value}{space 1}{space 1}{ralign 9:lower_ic}{space 1}{space 1}{ralign 9:upper_ic}{space 1}
+{space 0}{hline 13}{c   +}{hline 11}{hline 11}{hline 11}{hline 11}{hline 11}{hline 11}
+{space 0}{space 0}{ralign 12:W_TC}{space 1}{c |}{space 1}{ralign 9:{res:{sf: .0315112}}}{space 1}{space 1}{ralign 9:{res:{sf:  .012367}}}{space 1}{space 1}{ralign 9:{res:{sf: 2.548003}}}{space 1}{space 1}{ralign 9:{res:{sf: .0108342}}}{space 1}{space 1}{ralign 9:{res:{sf: .0065653}}}{space 1}{space 1}{ralign 9:{res:{sf: .0549088}}}{space 1}
+
+{com}. addtotable_LATE
+{txt}
+{com}. fuzzydid pres_turnout G1872 year numdailies, tc newcateg(0 1 2 45) continuous($demolist) qualitative(st1-st48  $misdemolist ) breps(200) cluster(cnty90)
+{txt}(running {bf:estim_wrapper} on estimation sample)
+
+Bootstrap replications ({res}200{txt})
+{hline 4}{c +}{hline 3} 1 {hline 3}{c +}{hline 3} 2 {hline 3}{c +}{hline 3} 3 {hline 3}{c +}{hline 3} 4 {hline 3}{c +}{hline 3} 5 
+..................................................    50
+..................................................   100
+..................................................   150
+..................................................   200
+{res}
+No method was specified to estimate E(Y|X), E(D|X) and P(D=d|X). Method set to default: ols.
+
+
+{txt}{p 0 0 2}Estimator(s) of the local average treatment effect with bootstrapped  standard errors.  Cluster variable: cnty90.  Number of observations:  1424 .  Controls included in the estimation:  D_ishare_foreign D_ishare_manuf D_ishare_male D_ishare_urb D_ishare_town D_ishare_white D_ilog_manufout_ctrl st1 st2 st3 st4 st5 st6 st7 st8 st9 st10 st11 st12 st13 st14 st15 st16 st17 st18 st19 st20 st21 st22 st23 st24 st25 st26 st27 st28 st29 st30 st31 st32 st33 st34 st35 st36 st37 st38 st39 st40 st41 st42 st43 st44 st45 st46 st47 st48 mis_D_ishare_foreign mis_D_ishare_manuf mis_D_ishare_male mis_D_ishare_urb mis_D_ishare_town mis_D_ishare_white mis_D_ilog_manufout_ctrl .{p_end}
+
+{space 0}{space 0}{ralign 12:}{space 1}{c |}{space 1}{ralign 9:LATE}{space 1}{space 1}{ralign 9:Std_Err}{space 1}{space 1}{ralign 9:t}{space 1}{space 1}{ralign 9:p_value}{space 1}{space 1}{ralign 9:lower_ic}{space 1}{space 1}{ralign 9:upper_ic}{space 1}
+{space 0}{hline 13}{c   +}{hline 11}{hline 11}{hline 11}{hline 11}{hline 11}{hline 11}
+{space 0}{space 0}{ralign 12:W_TC}{space 1}{c |}{space 1}{ralign 9:{res:{sf: .0361747}}}{space 1}{space 1}{ralign 9:{res:{sf: .9940662}}}{space 1}{space 1}{ralign 9:{res:{sf: .0363906}}}{space 1}{space 1}{ralign 9:{res:{sf: .9709709}}}{space 1}{space 1}{ralign 9:{res:{sf:-.7728078}}}{space 1}{space 1}{ralign 9:{res:{sf: 3.366485}}}{space 1}
+
+{com}. addtotable_LATE
+{txt}
+{com}. fuzzydid congtout G1872 year numdailies, tc newcateg(0 1 2 45) continuous($demolist) qualitative(st1-st48  $misdemolist ) breps(200) cluster(cnty90)
+{txt}(running {bf:estim_wrapper} on estimation sample)
+
+Bootstrap replications ({res}200{txt})
+{hline 4}{c +}{hline 3} 1 {hline 3}{c +}{hline 3} 2 {hline 3}{c +}{hline 3} 3 {hline 3}{c +}{hline 3} 4 {hline 3}{c +}{hline 3} 5 
+..................................................    50
+..................................................   100
+..................................................   150
+..................................................   200
+{res}
+No method was specified to estimate E(Y|X), E(D|X) and P(D=d|X). Method set to default: ols.
+
+
+{txt}{p 0 0 2}Estimator(s) of the local average treatment effect with bootstrapped  standard errors.  Cluster variable: cnty90.  Number of observations:  1363 .  Controls included in the estimation:  D_ishare_foreign D_ishare_manuf D_ishare_male D_ishare_urb D_ishare_town D_ishare_white D_ilog_manufout_ctrl st1 st2 st3 st4 st5 st6 st7 st8 st9 st10 st11 st12 st13 st14 st15 st16 st17 st18 st19 st20 st21 st22 st23 st24 st25 st26 st27 st28 st29 st30 st31 st32 st33 st34 st35 st36 st37 st38 st39 st40 st41 st42 st43 st44 st45 st46 st47 st48 mis_D_ishare_foreign mis_D_ishare_manuf mis_D_ishare_male mis_D_ishare_urb mis_D_ishare_town mis_D_ishare_white mis_D_ilog_manufout_ctrl .{p_end}
+
+{space 0}{space 0}{ralign 12:}{space 1}{c |}{space 1}{ralign 9:LATE}{space 1}{space 1}{ralign 9:Std_Err}{space 1}{space 1}{ralign 9:t}{space 1}{space 1}{ralign 9:p_value}{space 1}{space 1}{ralign 9:lower_ic}{space 1}{space 1}{ralign 9:upper_ic}{space 1}
+{space 0}{hline 13}{c   +}{hline 11}{hline 11}{hline 11}{hline 11}{hline 11}{hline 11}
+{space 0}{space 0}{ralign 12:W_TC}{space 1}{c |}{space 1}{ralign 9:{res:{sf:-.0421545}}}{space 1}{space 1}{ralign 9:{res:{sf: .2211479}}}{space 1}{space 1}{ralign 9:{res:{sf:-.1906166}}}{space 1}{space 1}{ralign 9:{res:{sf:  .848826}}}{space 1}{space 1}{ralign 9:{res:{sf:-.7149286}}}{space 1}{space 1}{ralign 9:{res:{sf: .1227953}}}{space 1}
+
+{com}. addtotable_LATE
+{txt}
+{com}. fuzzydid D_congtout_long G1872 year numdailies, tc newcateg(0 1 2 45) continuous($demolist) qualitative(st1-st48  $misdemolist ) breps(200) cluster(cnty90)
+{txt}(running {bf:estim_wrapper} on estimation sample)
+
+Bootstrap replications ({res}200{txt})
+{hline 4}{c +}{hline 3} 1 {hline 3}{c +}{hline 3} 2 {hline 3}{c +}{hline 3} 3 {hline 3}{c +}{hline 3} 4 {hline 3}{c +}{hline 3} 5 
+..................................................    50
+..................................................   100
+..................................................   150
+..................................................   200
+{res}
+No method was specified to estimate E(Y|X), E(D|X) and P(D=d|X). Method set to default: ols.
+
+
+{txt}{p 0 0 2}Estimator(s) of the local average treatment effect with bootstrapped  standard errors.  Cluster variable: cnty90.  Number of observations:  916 .  Controls included in the estimation:  D_ishare_foreign D_ishare_manuf D_ishare_male D_ishare_urb D_ishare_town D_ishare_white D_ilog_manufout_ctrl st1 st2 st3 st4 st5 st6 st7 st8 st9 st10 st11 st12 st13 st14 st15 st16 st17 st18 st19 st20 st21 st22 st23 st24 st25 st26 st27 st28 st29 st30 st31 st32 st33 st34 st35 st36 st37 st38 st39 st40 st41 st42 st43 st44 st45 st46 st47 st48 mis_D_ishare_foreign mis_D_ishare_manuf mis_D_ishare_male mis_D_ishare_urb mis_D_ishare_town mis_D_ishare_white mis_D_ilog_manufout_ctrl .{p_end}
+
+{space 0}{space 0}{ralign 12:}{space 1}{c |}{space 1}{ralign 9:LATE}{space 1}{space 1}{ralign 9:Std_Err}{space 1}{space 1}{ralign 9:t}{space 1}{space 1}{ralign 9:p_value}{space 1}{space 1}{ralign 9:lower_ic}{space 1}{space 1}{ralign 9:upper_ic}{space 1}
+{space 0}{hline 13}{c   +}{hline 11}{hline 11}{hline 11}{hline 11}{hline 11}{hline 11}
+{space 0}{space 0}{ralign 12:W_TC}{space 1}{c |}{space 1}{ralign 9:{res:{sf:-.0076003}}}{space 1}{space 1}{ralign 9:{res:{sf: .4414654}}}{space 1}{space 1}{ralign 9:{res:{sf: -.017216}}}{space 1}{space 1}{ralign 9:{res:{sf: .9862643}}}{space 1}{space 1}{ralign 9:{res:{sf:-.3262868}}}{space 1}{space 1}{ralign 9:{res:{sf: .2792026}}}{space 1}
+
+{com}. addtotable_LATE
+{txt}
+{com}. matrix_to_txt, saving(..\output\tables_tc6872.txt) mat(TABLE) format(%20.4f) title(<tab:Turnout_main_tc6872>) append
+{txt}(note: file ..\output\tables_tc6872.txt not found)
+
+{com}. 
+. *****************************************************************
+. * TABLE <tab:Turnout_main_replication_DID_Full>
+. *****************************************************************
+. 
+. cap matrix drop TABLE
+{txt}
+{com}. 
+. * Full sample of elections
+. 
+. sort cnty90 year
+{txt}
+{com}. by cnty90 year: egen mean_D = mean(numdailies)
+{txt}
+{com}. by cnty90: g lag_mean_D = mean_D[_n-1] if cnty90==cnty90[_n-1]&year-4==year[_n-1]
+{txt}(1,243 missing values generated)
+
+{com}. gen G_T = sign(mean_D - lag_mean_D) if sample==1
+{txt}(1,245 missing values generated)
+
+{com}. gen G_Tplus1 = G_T[_n+1] if cnty90==cnty90[_n+1]&year+4==year[_n+1]
+{txt}(1,245 missing values generated)
+
+{com}. 
+. ***DID TC CIC without controls
+. fuzzydid pres_turnout G_T G_Tplus1 year numdailies, did tc cic newcateg(0 1 2 45)  breps(200) cluster(cnty90)
+{txt}(running {bf:estim_wrapper} on estimation sample)
+
+Bootstrap replications ({res}200{txt})
+{hline 4}{c +}{hline 3} 1 {hline 3}{c +}{hline 3} 2 {hline 3}{c +}{hline 3} 3 {hline 3}{c +}{hline 3} 4 {hline 3}{c +}{hline 3} 5 
+..................................................    50
+..................................................   100
+..................................................   150
+..................................................   200
+{res}
+{txt}{p 0 0 2}Estimator(s) of the local average treatment effect with bootstrapped  standard errors.  Cluster variable: cnty90.  Number of observations:  16872 .{p_end}
+
+{space 0}{space 0}{ralign 12:}{space 1}{c |}{space 1}{ralign 9:LATE}{space 1}{space 1}{ralign 9:Std_Err}{space 1}{space 1}{ralign 9:t}{space 1}{space 1}{ralign 9:p_value}{space 1}{space 1}{ralign 9:lower_ic}{space 1}{space 1}{ralign 9:upper_ic}{space 1}
+{space 0}{hline 13}{c   +}{hline 11}{hline 11}{hline 11}{hline 11}{hline 11}{hline 11}
+{space 0}{space 0}{ralign 12:W_DID}{space 1}{c |}{space 1}{ralign 9:{res:{sf: .0037507}}}{space 1}{space 1}{ralign 9:{res:{sf: .0013676}}}{space 1}{space 1}{ralign 9:{res:{sf: 2.742494}}}{space 1}{space 1}{ralign 9:{res:{sf: .0060975}}}{space 1}{space 1}{ralign 9:{res:{sf: .0012755}}}{space 1}{space 1}{ralign 9:{res:{sf: .0064127}}}{space 1}
+{space 0}{space 0}{ralign 12:W_TC}{space 1}{c |}{space 1}{ralign 9:{res:{sf: .0053305}}}{space 1}{space 1}{ralign 9:{res:{sf:  .001423}}}{space 1}{space 1}{ralign 9:{res:{sf:  3.74584}}}{space 1}{space 1}{ralign 9:{res:{sf: .0001798}}}{space 1}{space 1}{ralign 9:{res:{sf: .0025417}}}{space 1}{space 1}{ralign 9:{res:{sf: .0079316}}}{space 1}
+{space 0}{space 0}{ralign 12:W_CIC}{space 1}{c |}{space 1}{ralign 9:{res:{sf:  .004215}}}{space 1}{space 1}{ralign 9:{res:{sf: .0014599}}}{space 1}{space 1}{ralign 9:{res:{sf: 2.887226}}}{space 1}{space 1}{ralign 9:{res:{sf: .0038865}}}{space 1}{space 1}{ralign 9:{res:{sf: .0015552}}}{space 1}{space 1}{ralign 9:{res:{sf: .0069987}}}{space 1}
+
+{com}. 
+. 
+. 
+. ***DID TC with demolist and misdemolist controls and state specific trends
+. 
+. fuzzydid readshare_hhld G_T G_Tplus1 year numdailies, did  newcateg(0 1 2 45) continuous($demolist) qualitative(st1-st48  $misdemolist ) breps(200) cluster(cnty90)
+{txt}(running {bf:estim_wrapper} on estimation sample)
+
+Bootstrap replications ({res}200{txt})
+{hline 4}{c +}{hline 3} 1 {hline 3}{c +}{hline 3} 2 {hline 3}{c +}{hline 3} 3 {hline 3}{c +}{hline 3} 4 {hline 3}{c +}{hline 3} 5 
+..................................................    50
+..................................................   100
+..................................................   150
+..................................................   200
+{res}
+No method was specified to estimate E(Y|X), E(D|X) and P(D=d|X). Method set to default: ols.
+
+
+{txt}{p 0 0 2}Estimator(s) of the local average treatment effect with bootstrapped  standard errors.  Cluster variable: cnty90.  Number of observations:  16872 .  Controls included in the estimation:  D_ishare_foreign D_ishare_manuf D_ishare_male D_ishare_urb D_ishare_town D_ishare_white D_ilog_manufout_ctrl st1 st2 st3 st4 st5 st6 st7 st8 st9 st10 st11 st12 st13 st14 st15 st16 st17 st18 st19 st20 st21 st22 st23 st24 st25 st26 st27 st28 st29 st30 st31 st32 st33 st34 st35 st36 st37 st38 st39 st40 st41 st42 st43 st44 st45 st46 st47 st48 mis_D_ishare_foreign mis_D_ishare_manuf mis_D_ishare_male mis_D_ishare_urb mis_D_ishare_town mis_D_ishare_white mis_D_ilog_manufout_ctrl .{p_end}
+
+{space 0}{space 0}{ralign 12:}{space 1}{c |}{space 1}{ralign 9:LATE}{space 1}{space 1}{ralign 9:Std_Err}{space 1}{space 1}{ralign 9:t}{space 1}{space 1}{ralign 9:p_value}{space 1}{space 1}{ralign 9:lower_ic}{space 1}{space 1}{ralign 9:upper_ic}{space 1}
+{space 0}{hline 13}{c   +}{hline 11}{hline 11}{hline 11}{hline 11}{hline 11}{hline 11}
+{space 0}{space 0}{ralign 12:W_DID}{space 1}{c |}{space 1}{ralign 9:{res:{sf: .2827101}}}{space 1}{space 1}{ralign 9:{res:{sf: .1008862}}}{space 1}{space 1}{ralign 9:{res:{sf: 2.802267}}}{space 1}{space 1}{ralign 9:{res:{sf: .0050745}}}{space 1}{space 1}{ralign 9:{res:{sf: .2516312}}}{space 1}{space 1}{ralign 9:{res:{sf: .3407771}}}{space 1}
+
+{com}. addtotable_LATE
+{txt}
+{com}. ***DID without controls but with state specific trends
+. fuzzydid pres_turnout G_T G_Tplus1 year numdailies, did tc newcateg(0 1 2 45) qualitative(st1-st48) breps(200) cluster(cnty90)
+{txt}(running {bf:estim_wrapper} on estimation sample)
+
+Bootstrap replications ({res}200{txt})
+{hline 4}{c +}{hline 3} 1 {hline 3}{c +}{hline 3} 2 {hline 3}{c +}{hline 3} 3 {hline 3}{c +}{hline 3} 4 {hline 3}{c +}{hline 3} 5 
+..................................................    50
+..................................................   100
+..................................................   150
+..................................................   200
+{res}
+No method was specified to estimate E(Y|X), E(D|X) and P(D=d|X). Method set to default: ols.
+
+
+{txt}{p 0 0 2}Estimator(s) of the local average treatment effect with bootstrapped  standard errors.  Cluster variable: cnty90.  Number of observations:  16872 .  Controls included in the estimation:  st1 st2 st3 st4 st5 st6 st7 st8 st9 st10 st11 st12 st13 st14 st15 st16 st17 st18 st19 st20 st21 st22 st23 st24 st25 st26 st27 st28 st29 st30 st31 st32 st33 st34 st35 st36 st37 st38 st39 st40 st41 st42 st43 st44 st45 st46 st47 st48 .{p_end}
+
+{space 0}{space 0}{ralign 12:}{space 1}{c |}{space 1}{ralign 9:LATE}{space 1}{space 1}{ralign 9:Std_Err}{space 1}{space 1}{ralign 9:t}{space 1}{space 1}{ralign 9:p_value}{space 1}{space 1}{ralign 9:lower_ic}{space 1}{space 1}{ralign 9:upper_ic}{space 1}
+{space 0}{hline 13}{c   +}{hline 11}{hline 11}{hline 11}{hline 11}{hline 11}{hline 11}
+{space 0}{space 0}{ralign 12:W_DID}{space 1}{c |}{space 1}{ralign 9:{res:{sf: .0026383}}}{space 1}{space 1}{ralign 9:{res:{sf: .0009983}}}{space 1}{space 1}{ralign 9:{res:{sf: 2.642724}}}{space 1}{space 1}{ralign 9:{res:{sf: .0082242}}}{space 1}{space 1}{ralign 9:{res:{sf: .0009608}}}{space 1}{space 1}{ralign 9:{res:{sf: .0045885}}}{space 1}
+{space 0}{space 0}{ralign 12:W_TC}{space 1}{c |}{space 1}{ralign 9:{res:{sf: .0043428}}}{space 1}{space 1}{ralign 9:{res:{sf: .0012981}}}{space 1}{space 1}{ralign 9:{res:{sf: 3.345609}}}{space 1}{space 1}{ralign 9:{res:{sf:  .000821}}}{space 1}{space 1}{ralign 9:{res:{sf: .0018967}}}{space 1}{space 1}{ralign 9:{res:{sf: .0067374}}}{space 1}
+
+{com}. addtotable_LATE
+{err}conformability error
+{txt}{search r(503), local:r(503);}
+
+end of do-file
+
+{search r(503), local:r(503);}
+
+{com}. exit, clear
