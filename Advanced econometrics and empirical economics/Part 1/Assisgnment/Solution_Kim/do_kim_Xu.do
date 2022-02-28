@@ -1,4 +1,4 @@
-cd "D:\Dropbox\0 EEE\1 Groote\Assignment"
+cd "C:\Users\alienware\Desktop\Deeqa_EEE\Advanced econometrics and empirical economics\Part 1\Assisgnment\Solution_Kim"
 use "data_assignment.dta", clear
 log using "log_kim_Xu"
 

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 	// Environment
     clear all
 	cd "C:\Users\33678\Desktop\Deeqa_EEE\Advanced econometrics and empirical economics\Part 1\Assisgnment\Solution"
@@ -223,3 +224,14 @@
 		esttab DY_HS DY_HS_CCP using "Part4_logitTable.tex", replace mtitle("Structural Estimation""CCP Estimation") collabels(none) nonumbers se noomitted 
 
 log close
+=======
+/// Environment Setting
+
+clear all
+
+cd "C:\Users\alienware\Desktop\Deeqa_EEE\Advanced econometrics and empirical economics\Part 1\Assisgnment\Solution"
+use "data_assignment.dta", clear
+
+/// Question 1
+
+>>>>>>> 66913a48bcf8e118d239302b64a7c0b43defd62d
